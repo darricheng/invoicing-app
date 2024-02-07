@@ -1,6 +1,7 @@
 use diesel::{Queryable, Selectable};
+use serde::Serialize;
 
-#[derive(Queryable, Selectable)]
+#[derive(Queryable, Selectable, Serialize)]
 #[diesel(table_name = crate::schema::customers)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct Customer {
@@ -9,7 +10,7 @@ pub struct Customer {
     pub phone: String,
 }
 
-#[derive(Queryable, Selectable)]
+#[derive(Queryable, Selectable, Serialize)]
 #[diesel(table_name = crate::schema::line_items)]
 #[diesel(check_for_backend(diesel::sqlite::Sqlite))]
 pub struct LineItem {
