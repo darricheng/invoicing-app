@@ -1,0 +1,1 @@
+- [ ] Add created and updated at timestamps to sql tables
