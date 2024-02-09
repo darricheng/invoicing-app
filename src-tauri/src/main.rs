@@ -85,7 +85,7 @@ struct NewCustomer {
 }
 
 #[command]
-fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<i32, String> {
+fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<(i32, usize), String> {
     let mut binding = state.db.lock().unwrap();
     let db_conn = binding.as_mut().unwrap();
     let customer = data.customer;
@@ -104,7 +104,7 @@ fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<i32, St
         .execute(db_conn)
         .map_err(|e| e.to_string())?;
     println!("inserted {} new line items", num_line_items);
-    Ok(new_customer_id)
+    Ok((new_customer_id, num_line_items))
 }
 
 #[command]
