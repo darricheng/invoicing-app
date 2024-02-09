@@ -1,8 +1,28 @@
-<script>
-	import { AppShell, AppBar, TabGroup, TabAnchor } from '@skeletonlabs/skeleton';
+<script lang="ts">
+	import {
+		AppShell,
+		AppBar,
+		TabGroup,
+		TabAnchor,
+		initializeStores,
+		Modal,
+		type ModalComponent
+	} from '@skeletonlabs/skeleton';
 	import '../app.pcss';
+	import CustomerModal from '$lib/components/CustomerModal.svelte';
+
+	initializeStores();
+
+	const modalRegistry: Record<string, ModalComponent> = {
+		customerModal: {
+			ref: CustomerModal,
+			// Provide a template literal for the default component slot
+			slot: '<p>Placeholder</p>'
+		}
+	};
 </script>
 
+<Modal components={modalRegistry} />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar>
