@@ -4,14 +4,12 @@
 use std::{env, sync::Mutex};
 
 use diesel::{
-    insert_into, prelude::Insertable, Connection, ConnectionError, RunQueryDsl, SqliteConnection,
+    insert_into, prelude::Insertable, BelongingToDsl, Connection, ConnectionError, QueryDsl,
+    RunQueryDsl, SelectableHelper, SqliteConnection,
 };
 use dotenvy::dotenv;
 use models::{Customer, LineItem};
-use schema::{
-    customers::{self, customer_id, dsl::*},
-    line_items::{self, dsl::*},
-};
+use schema::{customers, line_items};
 use serde::Deserialize;
 use tauri::{command, generate_handler, Manager, State};
 
@@ -47,6 +45,7 @@ fn main() {
         })
         .invoke_handler(generate_handler![
             list_customers,
+            get_customer,
             add_customer,
             edit_customer
         ])
@@ -59,7 +58,7 @@ fn main() {
 fn list_customers(state: State<DbConnection>) -> Vec<Customer> {
     let mut binding = state.db.lock().unwrap();
     let db_conn = binding.as_mut().unwrap();
-    let results = customers.load::<Customer>(db_conn).unwrap();
+    let results = customers::dsl::customers.load::<Customer>(db_conn).unwrap();
     results
 }
 
@@ -73,25 +72,28 @@ struct LineItemForm {
 
 #[derive(Debug, Deserialize, Insertable)]
 #[diesel(table_name = customers)]
-struct CustomerForm {
+struct BaseCustomerForm {
     name: String,
     phone: String,
 }
 
 #[derive(Deserialize)]
-struct NewCustomer {
-    customer: CustomerForm,
+struct FullCustomerForm {
+    customer: BaseCustomerForm,
     line_items: Vec<LineItemForm>,
 }
 
 #[command]
-fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<(i32, usize), String> {
+fn add_customer(
+    state: State<DbConnection>,
+    data: FullCustomerForm,
+) -> Result<(i32, usize), String> {
     let mut binding = state.db.lock().unwrap();
     let db_conn = binding.as_mut().unwrap();
     let customer = data.customer;
-    let new_customer_id = insert_into(customers)
+    let new_customer_id = insert_into(customers::dsl::customers)
         .values(customer)
-        .returning(customer_id)
+        .returning(customers::dsl::id)
         .get_result(db_conn)
         .map_err(|e| e.to_string())?;
 
@@ -99,7 +101,7 @@ fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<(i32, u
     new_line_items
         .iter_mut()
         .for_each(|el| el.customer_id = Some(new_customer_id));
-    let num_line_items = insert_into(line_items)
+    let num_line_items = insert_into(line_items::dsl::line_items)
         .values(new_line_items)
         .execute(db_conn)
         .map_err(|e| e.to_string())?;
@@ -108,12 +110,33 @@ fn add_customer(state: State<DbConnection>, data: NewCustomer) -> Result<(i32, u
 }
 
 #[command]
+fn get_customer(state: State<DbConnection>, id: i32) -> Result<(Customer, Vec<LineItem>), String> {
+    let mut binding = state.db.lock().unwrap();
+    let db_conn = binding.as_mut().unwrap();
+    let customer = customers::dsl::customers
+        .find(id)
+        .select(Customer::as_select())
+        .first(db_conn)
+        .map_err(|e| e.to_string())?;
+
+    let items = LineItem::belonging_to(&customer)
+        .select(LineItem::as_select())
+        .load(db_conn)
+        .map_err(|e| e.to_string())?;
+
+    Ok((customer, items))
+}
+
+#[command]
 fn edit_customer(
     state: State<DbConnection>,
     id: i32,
-    data: CustomerForm,
+    data: BaseCustomerForm,
 ) -> Result<Customer, String> {
     let mut binding = state.db.lock().unwrap();
     let db_conn = binding.as_mut().unwrap();
     todo!()
 }
+
+#[command]
+fn delete_line_item(state: State<DbConnection>, id: i32) {}

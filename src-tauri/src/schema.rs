@@ -1,16 +1,16 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    customers (customer_id) {
-        customer_id -> Integer,
+    customers (id) {
+        id -> Integer,
         name -> Text,
         phone -> Text,
     }
 }
 
 diesel::table! {
-    line_items (line_item_id) {
-        line_item_id -> Integer,
+    line_items (id) {
+        id -> Integer,
         name -> Text,
         rate -> Integer,
         customer_id -> Integer,

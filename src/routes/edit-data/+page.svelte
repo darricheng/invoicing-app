@@ -8,20 +8,7 @@
 	} from '@skeletonlabs/skeleton';
 	import { invoke } from '@tauri-apps/api';
 	import { onMount } from 'svelte';
-
-	// INTERFACES
-	interface Customer {
-		customer_id: number;
-		customer_name: string;
-		phone: string;
-	}
-	interface CustomerFormData {
-		customer: {
-			name: string;
-			phone: string;
-		};
-		line_items: Array<{ name: string; rate: string }>;
-	}
+	import type { CustomerFormData, Customer } from '$lib/types';
 
 	// VARIABLES
 	let tableData: Array<Customer> = [];
@@ -38,7 +25,8 @@
 			'name' in obj.customer &&
 			'phone' in obj.customer &&
 			'line_items' in obj &&
-			(obj.line_items.length === 0 || ('name' in obj.line_items[0] && 'rate' in obj.line_items[0]))
+			(obj.line_items.length === 0 ||
+				('name' in obj.line_items[0] && 'rate' in obj.line_items[0] && 'id' in obj.line_items[0]))
 		);
 	}
 	async function fetchTableData() {
@@ -51,7 +39,10 @@
 				type: 'component',
 				title: 'New Customer',
 				component: 'customerModal',
-				response: (res) => resolve(res)
+				response: (res) => resolve(res),
+				meta: {
+					isExistingCustomer: false
+				}
 			};
 			modalStore.trigger(newCustomerModal);
 		})
@@ -60,7 +51,10 @@
 				let [id, numItems] = (await invoke('add_customer', {
 					data: {
 						customer: newCustomer.customer,
-						line_items: newCustomer.line_items
+						// get rid of id field before submitting
+						line_items: newCustomer.line_items.map((el) => {
+							return { name: el.name, rate: el.rate };
+						})
 					}
 				})) as [number, number];
 			})
@@ -71,6 +65,24 @@
 	function onRowClick(rowMeta: CustomEvent) {
 		const customerId = rowMeta.detail[0];
 		// TODO: Get data for this customer then show modal to edit the data
+		new Promise((resolve) => {
+			const editCustomerModal: ModalSettings = {
+				type: 'component',
+				title: 'Edit Customer',
+				component: 'customerModal',
+				response: (res) => resolve(res),
+				meta: {
+					isExistingCustomer: true,
+					customerId,
+					deleteLineItemHandler: async (line_item_id) => {
+						// TODO: invoke tauri command to delete the line item
+					}
+				}
+			};
+			modalStore.trigger(editCustomerModal);
+		}).then(async (updatedCustomer) => {
+			// TODO: update data for the selected customer
+		});
 	}
 
 	// LIFECYCLE
@@ -79,12 +91,17 @@
 	});
 
 	// REACTIVE
-	// TODO: Doesn't update when new customer is added
 	$: tableSource = {
 		head: ['Name', 'Phone'],
-		body: tableMapperValues(tableData, ['customer_name', 'phone']),
-		meta: tableMapperValues(tableData, ['customer_id', 'customer_name', 'phone'])
+		body: tableMapperValues(tableData, ['name', 'phone']),
+		meta: tableMapperValues(tableData, ['id', 'name', 'phone'])
 	};
+
+	// TEST STUFF
+	async function testFn() {
+		let res = await invoke('get_customer', { id: 1 });
+		console.log(res);
+	}
 </script>
 
 <div class="p-8">
@@ -92,6 +109,7 @@
 		<h1 class="h1">Edit Customers</h1>
 		<div class="flex flex-row-reverse">
 			<button type="button" class="variant-filled btn" on:click={addCustomer}>Add Customer</button>
+			<button type="button" class="variant-filled btn" on:click={testFn}>Test Btn</button>
 		</div>
 	</div>
 	<Table bind:source={tableSource} interactive={true} on:selected={onRowClick} />
