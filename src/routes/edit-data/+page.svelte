@@ -69,7 +69,6 @@
 	}
 	function onRowClick(rowMeta: CustomEvent) {
 		const customerId = rowMeta.detail[0];
-		// TODO: Get data for this customer then show modal to edit the data
 		new Promise((resolve) => {
 			const editCustomerModal: ModalSettings = {
 				type: 'component',
@@ -84,7 +83,6 @@
 			modalStore.trigger(editCustomerModal);
 		})
 			.then(async (updatedCustomer) => {
-				// TODO: update data for the selected customer
 				if (!isCustomerFormaData(updatedCustomer)) return;
 				let [customersUpdated, lineItemsUpdated] = (await invoke('edit_customer', {
 					data: {

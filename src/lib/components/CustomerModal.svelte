@@ -14,7 +14,6 @@
 	const isExistingCustomer = $modalStore[0].meta.isExistingCustomer;
 
 	// Initial form Data
-	// TODO: Change this to be the existing customer data if user is editing customer
 	let formData: CustomerFormData;
 	$: formData = {
 		customer: {

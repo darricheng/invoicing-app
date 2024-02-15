@@ -158,8 +158,7 @@ fn edit_customer(
         .execute(db_conn)
         .map_err(|e| e.to_string())?;
 
-    // TODO: get items from db, filter for new, changed, and deleted items, then execute queries accordingly
-    // see: https://users.rust-lang.org/t/idiomatic-way-to-get-difference-between-two-vecs/48396/11
+    // get items from db, filter for new, changed, and deleted items, then execute queries accordingly
     let (new_line_items, updated_line_items): (Vec<LineItemForm>, Vec<LineItemForm>) =
         line_items_to_edit
             .into_iter()
