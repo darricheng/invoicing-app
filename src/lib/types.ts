@@ -1,5 +1,6 @@
 export interface CustomerFormData {
 	customer: {
+		id: number | null;
 		name: string;
 		phone: string;
 	};

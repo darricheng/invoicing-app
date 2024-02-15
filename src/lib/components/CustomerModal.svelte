@@ -18,6 +18,7 @@
 	let formData: CustomerFormData;
 	$: formData = {
 		customer: {
+			id: null,
 			name: '',
 			phone: ''
 		},
@@ -31,6 +32,7 @@
 			})) as [Customer, Array<LineItem>];
 			formData.customer.name = customer.name;
 			formData.customer.phone = customer.phone;
+			formData.customer.id = customer.id;
 			formData.line_items = lineItems;
 		}
 	});

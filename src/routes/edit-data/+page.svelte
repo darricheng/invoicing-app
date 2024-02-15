@@ -24,6 +24,7 @@
 			'customer' in obj &&
 			'name' in obj.customer &&
 			'phone' in obj.customer &&
+			'id' in obj.customer &&
 			'line_items' in obj &&
 			(obj.line_items.length === 0 ||
 				('name' in obj.line_items[0] && 'rate' in obj.line_items[0] && 'id' in obj.line_items[0]))
@@ -58,6 +59,9 @@
 					}
 				})) as [number, number];
 			})
+			.catch((err) => {
+				// TODO: show error message to user
+			})
 			.finally(() => {
 				fetchTableData();
 			});
@@ -80,9 +84,21 @@
 				}
 			};
 			modalStore.trigger(editCustomerModal);
-		}).then(async (updatedCustomer) => {
-			// TODO: update data for the selected customer
-		});
+		})
+			.then(async (updatedCustomer) => {
+				// TODO: update data for the selected customer
+				if (!isCustomerFormaData(updatedCustomer)) return;
+				let [customersUpdated, lineItemsUpdated] = (await invoke('edit_customer', {
+					data: {
+						customer: updatedCustomer.customer,
+						line_items: updatedCustomer.line_items
+					}
+				})) as [number, number];
+			})
+			.catch((err) => {
+				console.error(err);
+				// TODO: show error message to user
+			});
 	}
 
 	// LIFECYCLE
