@@ -113,12 +113,6 @@
 		body: tableMapperValues(tableData, ['name', 'phone']),
 		meta: tableMapperValues(tableData, ['id', 'name', 'phone'])
 	};
-
-	// TEST STUFF
-	async function testFn() {
-		let res = await invoke('get_customer', { id: 1 });
-		console.log(res);
-	}
 </script>
 
 <div class="p-8">
@@ -126,7 +120,6 @@
 		<h1 class="h1">Edit Customers</h1>
 		<div class="flex flex-row-reverse">
 			<button type="button" class="variant-filled btn" on:click={addCustomer}>Add Customer</button>
-			<button type="button" class="variant-filled btn" on:click={testFn}>Test Btn</button>
 		</div>
 	</div>
 	<Table bind:source={tableSource} interactive={true} on:selected={onRowClick} />
