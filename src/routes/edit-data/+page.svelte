@@ -60,6 +60,7 @@
 				})) as [number, number];
 			})
 			.catch((err) => {
+				console.error(err);
 				// TODO: show error message to user
 			})
 			.finally(() => {
@@ -77,10 +78,7 @@
 				response: (res) => resolve(res),
 				meta: {
 					isExistingCustomer: true,
-					customerId,
-					deleteLineItemHandler: async (line_item_id) => {
-						// TODO: invoke tauri command to delete the line item
-					}
+					customerId
 				}
 			};
 			modalStore.trigger(editCustomerModal);
