@@ -1,1 +1,3 @@
+- [x] feat: delete individual line items
+- [x] feat: delete customer
 - [ ] Add created and updated at timestamps to sql tables

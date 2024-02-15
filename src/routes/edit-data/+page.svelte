@@ -98,6 +98,9 @@
 			.catch((err) => {
 				console.error(err);
 				// TODO: show error message to user
+			})
+			.finally(() => {
+				fetchTableData();
 			});
 	}
 

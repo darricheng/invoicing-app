@@ -51,12 +51,18 @@
 		formData.line_items = [...formData.line_items, { name: '', rate: 0, id: null }];
 	}
 	function handleDeleteLineItem(i: number) {
-		if (isExistingCustomer) {
-			// TODO: need a way to pass the line item id
-			// $modalStore[0].meta.deleteLineItemHandler(line_item_id);
-		}
-
 		formData.line_items = formData.line_items.toSpliced(i, 1);
+	}
+
+	async function handleDeleteCustomer() {
+		let id = formData.customer.id;
+		if (id === null) {
+			console.error('ERROR: Delete customer button pressed when customer id is null.');
+		}
+		await invoke('delete_customer', { id });
+		// pass empty object to not  call edit_customer
+		if ($modalStore[0].response) $modalStore[0].response({});
+		modalStore.close();
 	}
 </script>
 
@@ -65,8 +71,11 @@
 		<header class={cHeader + ' inline-block'}>{$modalStore[0].title ?? '(title missing)'}</header>
 		{#if isExistingCustomer}
 			<!-- style attribute used to override space-y-4 class from {cBase} in parent div -->
-			<button class="variant-soft-error btn btn-md float-right" type="button" style="margin-top: 0;"
-				>Delete Customer</button
+			<button
+				class="variant-soft-error btn btn-md float-right"
+				type="button"
+				style="margin-top: 0;"
+				on:click={handleDeleteCustomer}>Delete Customer</button
 			>
 		{/if}
 		<!-- submit handles button click, keydown handles pressing enter in any input -->

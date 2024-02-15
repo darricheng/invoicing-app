@@ -47,7 +47,8 @@ fn main() {
             list_customers,
             get_customer,
             add_customer,
-            edit_customer
+            edit_customer,
+            delete_customer
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -144,6 +145,7 @@ fn edit_customer(
     state: State<DbConnection>,
     data: FullCustomerForm,
 ) -> Result<(usize, usize), String> {
+    println!("edit_customer called");
     let mut binding = state.db.lock().unwrap();
     let db_conn = binding.as_mut().unwrap();
 
@@ -202,4 +204,16 @@ fn edit_customer(
 }
 
 #[command]
-fn delete_line_item(state: State<DbConnection>, id: i32) {}
+fn delete_customer(state: State<DbConnection>, id: i32) -> Result<bool, String> {
+    let mut binding = state.db.lock().unwrap();
+    let db_conn = binding.as_mut().unwrap();
+
+    diesel::delete(line_items::table.filter(line_items::customer_id.eq(id)))
+        .execute(db_conn)
+        .map_err(|e| e.to_string())?;
+    diesel::delete(customers::table.filter(customers::id.eq(id)))
+        .execute(db_conn)
+        .map_err(|e| e.to_string())?;
+
+    Ok(true)
+}
