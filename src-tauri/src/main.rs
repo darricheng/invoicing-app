@@ -5,12 +5,13 @@ use std::{collections::HashSet, env, sync::Mutex};
 
 use diesel::{
     insert_into, prelude::Insertable, query_builder::AsChangeset, BelongingToDsl, Connection,
-    ConnectionError, ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper, SqliteConnection,
+    ConnectionError, ExpressionMethods, GroupedBy, QueryDsl, RunQueryDsl, SelectableHelper,
+    SqliteConnection,
 };
 use dotenvy::dotenv;
 use models::{Customer, LineItem};
 use schema::{customers, line_items};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use tauri::{command, generate_handler, Manager, State};
 
 mod models;
@@ -48,7 +49,8 @@ fn main() {
             get_customer,
             add_customer,
             edit_customer,
-            delete_customer
+            delete_customer,
+            get_everything
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -215,4 +217,38 @@ fn delete_customer(state: State<DbConnection>, id: i32) -> Result<bool, String> 
         .map_err(|e| e.to_string())?;
 
     Ok(true)
+}
+
+#[derive(Serialize)]
+struct FullCustomerWithLineItems {
+    customer: Customer,
+    line_items: Vec<LineItem>,
+}
+
+#[command]
+fn get_everything(state: State<DbConnection>) -> Result<Vec<FullCustomerWithLineItems>, String> {
+    let mut binding = state.db.lock().unwrap();
+    let db_conn = binding.as_mut().unwrap();
+
+    let all_customers = customers::table
+        .select(Customer::as_select())
+        .load(db_conn)
+        .map_err(|e| e.to_string())?;
+
+    let all_line_items = LineItem::belonging_to(&all_customers)
+        .select(LineItem::as_select())
+        .load(db_conn)
+        .map_err(|e| e.to_string())?;
+
+    let line_items_per_customer = all_line_items
+        .grouped_by(&all_customers)
+        .into_iter()
+        .zip(all_customers)
+        .map(|(line_items, customer)| FullCustomerWithLineItems {
+            customer,
+            line_items,
+        })
+        .collect::<Vec<FullCustomerWithLineItems>>();
+
+    Ok(line_items_per_customer)
 }

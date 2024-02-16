@@ -19,3 +19,18 @@ export interface LineItem {
 	rate: number;
 	customer_id: number;
 }
+
+interface InvoiceLineItem {
+	id: number;
+	name: string;
+	rate: number;
+	customer_id: number;
+	quantity: number;
+	amount: number;
+	details: string;
+}
+
+export interface InvoiceTableData {
+	customer: Customer;
+	line_items: Array<InvoiceLineItem>;
+}
