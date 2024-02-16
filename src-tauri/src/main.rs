@@ -1,7 +1,9 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{collections::HashSet, env, sync::Mutex};
+mod invoice;
+mod models;
+mod schema;
 
 use diesel::{
     insert_into, prelude::Insertable, query_builder::AsChangeset, BelongingToDsl, Connection,
@@ -9,13 +11,12 @@ use diesel::{
     SqliteConnection,
 };
 use dotenvy::dotenv;
+use invoice::generate_pdf_invoices;
 use models::{Customer, LineItem};
 use schema::{customers, line_items};
 use serde::{Deserialize, Serialize};
+use std::{collections::HashSet, env, sync::Mutex};
 use tauri::{command, generate_handler, Manager, State};
-
-mod models;
-mod schema;
 
 struct DbConnection {
     db: Mutex<Option<SqliteConnection>>,
@@ -50,7 +51,8 @@ fn main() {
             add_customer,
             edit_customer,
             delete_customer,
-            get_everything
+            get_everything,
+            generate_pdf_invoices
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

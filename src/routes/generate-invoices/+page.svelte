@@ -4,9 +4,8 @@
 	import { onMount } from 'svelte';
 	import CustomerTable from './CustomerTable.svelte';
 
-	function generateInvoices() {
-		console.log('clicked generate invoices');
-		console.log(customerData);
+	async function generateInvoices() {
+		await invoke('generate_pdf_invoices', { data: customerData });
 	}
 
 	let customerData: Array<InvoiceTableData> = [];
