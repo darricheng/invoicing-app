@@ -12,3 +12,6 @@ vite.config.ts.timestamp-*
 # db stuff
 *.sqlite*
 *.db
+
+# generated stuff
+/invoices
