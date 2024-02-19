@@ -1,3 +1,7 @@
 - [x] feat: delete individual line items
 - [x] feat: delete customer
 - [ ] Add created and updated at timestamps to sql tables
+- [ ] Don't show any lines for customer if no line items (currently shows empty name and 0s in the number columns)
+- [ ] Store company details in db (editable in app) instead of using env vars
+- [ ] Change storage location for generated invoices to be configurable by user
+- [ ] Change pdf generation engine to be chromium using html + css
