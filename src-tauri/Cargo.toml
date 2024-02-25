@@ -23,7 +23,7 @@ diesel = { version = "2.1.0", features = [
   "returning_clauses_for_sqlite_3_35",
 ] }
 dotenvy = "0.15"
-printpdf = "0.7.0"
+printpdf = { version = "0.7.0", features = ["embedded_images"] }
 chrono = "0.4"
 
 [features]

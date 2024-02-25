@@ -74,6 +74,22 @@ fn generate_pdf(data: InvoiceData) -> Result<(), String> {
 
     let doc_margin = Mm(15.0);
 
+    // Logo
+    let image_bytes = include_bytes!("../../logo.png");
+    let mut reader = std::io::Cursor::new(image_bytes.as_ref());
+    let decoder = image_crate::codecs::png::PngDecoder::new(&mut reader).unwrap();
+    let image = remove_alpha_channel_from_image(Image::try_from(decoder).unwrap());
+
+    let logo_transform = ImageTransform {
+        translate_x: Some(Mm(150.0)),
+        translate_y: Some(doc_height - Mm(50.0)),
+        rotate: None,
+        scale_x: Some(1.0),
+        scale_y: Some(1.0),
+        dpi: Some(300.0),
+    };
+    image.add_to_layer(layer.clone(), logo_transform);
+
     // Dates for invoice
     let today = Local::now().date_naive();
     let today_str = format!("{}", today.format("%d %b %Y"));
@@ -198,4 +214,45 @@ fn generate_pdf(data: InvoiceData) -> Result<(), String> {
     .map_err(|e| e.to_string())?;
 
     Ok(())
+}
+
+fn remove_alpha_channel_from_image(image: Image) -> Image {
+    let image_x_object = image.image;
+    if !matches!(image_x_object.color_space, ColorSpace::Rgba) {
+        return Image {
+            image: image_x_object,
+        };
+    };
+    let ImageXObject {
+        color_space,
+        image_data,
+        ..
+    } = image_x_object;
+
+    let new_image_data = image_data
+        .chunks(4)
+        .map(|rgba| {
+            let [red, green, blue, alpha]: [u8; 4] = rgba.try_into().ok().unwrap();
+            let alpha = alpha as f64 / 255.0;
+            let new_red = ((1.0 - alpha) * 255.0 + alpha * red as f64) as u8;
+            let new_green = ((1.0 - alpha) * 255.0 + alpha * green as f64) as u8;
+            let new_blue = ((1.0 - alpha) * 255.0 + alpha * blue as f64) as u8;
+            return [new_red, new_green, new_blue];
+        })
+        .collect::<Vec<[u8; 3]>>()
+        .concat();
+
+    let new_color_space = match color_space {
+        ColorSpace::Rgba => ColorSpace::Rgb,
+        ColorSpace::GreyscaleAlpha => ColorSpace::Greyscale,
+        other_type => other_type,
+    };
+
+    Image {
+        image: ImageXObject {
+            color_space: new_color_space,
+            image_data: new_image_data,
+            ..image_x_object
+        },
+    }
 }

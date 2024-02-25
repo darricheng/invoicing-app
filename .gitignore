@@ -13,5 +13,8 @@ vite.config.ts.timestamp-*
 *.sqlite*
 *.db
 
+# user stuff for testing
+logo.*
+
 # generated stuff
 /invoices
