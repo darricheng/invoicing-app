@@ -117,7 +117,13 @@
 				</label>
 				<label class="label">
 					<span>Rate</span>
-					<input class="input" type="number" bind:value={item.rate} placeholder="e.g. 120" />
+					<input
+						class="input"
+						type="number"
+						step="0.01"
+						bind:value={item.rate}
+						placeholder="e.g. 80.75"
+					/>
 				</label>
 				<hr />
 			{/each}

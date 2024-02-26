@@ -72,7 +72,7 @@ fn list_customers(state: State<DbConnection>) -> Vec<Customer> {
 struct LineItemForm {
     id: Option<i32>,
     name: String,
-    rate: i32,
+    rate: f32,
     customer_id: Option<i32>,
 }
 

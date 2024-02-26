@@ -12,7 +12,7 @@ diesel::table! {
     line_items (id) {
         id -> Integer,
         name -> Text,
-        rate -> Integer,
+        rate -> Float,
         customer_id -> Integer,
     }
 }

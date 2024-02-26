@@ -21,6 +21,6 @@ pub struct Customer {
 pub struct LineItem {
     pub id: i32,
     pub name: String,
-    pub rate: i32,
+    pub rate: f32,
     pub customer_id: i32,
 }

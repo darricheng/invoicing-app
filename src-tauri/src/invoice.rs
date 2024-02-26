@@ -18,10 +18,10 @@ pub struct InvoiceData {
 struct InvoiceLineItem {
     id: i32, // unused
     name: String,
-    rate: i32,
+    rate: f32,
     customer_id: i32, // unused
     quantity: i32,
-    amount: i32,
+    amount: f32,
     details: String,
 }
 
@@ -128,7 +128,7 @@ fn generate_pdf(data: InvoiceData) -> Result<(), String> {
     let amount_x = rate_x + Mm(24.0);
     layer.use_text("Amount", 12.0, amount_x, line_items_header_y, &font);
 
-    let mut total_amount = 0;
+    let mut total_amount: f32 = 0.0;
     let mut next_line_item_y = doc_height - Mm(97.0);
     for (i, item) in data.line_items.into_iter().enumerate() {
         // We don't use both ids, so this stops the lsp complaining
