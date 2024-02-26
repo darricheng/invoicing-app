@@ -19,6 +19,7 @@
 				line_items: customer.line_items.map((item) => {
 					return {
 						...item,
+						_rate: 0,
 						_quantity: 0,
 						amount: 0,
 						details: '',
@@ -28,6 +29,13 @@
 						set quantity(val) {
 							this._quantity = val;
 							this.amount = val * this.rate;
+						},
+						get rate() {
+							return this._rate;
+						},
+						set rate(val) {
+							this._rate = val;
+							this.amount = val * this.quantity;
 						}
 					};
 				})
@@ -46,7 +54,6 @@
 			>
 		</div>
 	</div>
-	<!-- TODO: make the table columns all the same width -->
 	<div class="table-container">
 		<table class="table">
 			<thead class="table-head">
