@@ -20,7 +20,7 @@ struct InvoiceLineItem {
     name: String,
     rate: f32,
     customer_id: i32, // unused
-    quantity: i32,
+    quantity: f32,
     amount: f32,
     details: String,
 }

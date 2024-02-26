@@ -22,6 +22,7 @@
 						<input
 							class="input text-center"
 							type="number"
+							step="0.1"
 							bind:value={data.line_items[itemIndex].quantity}
 						/>
 					</td>
