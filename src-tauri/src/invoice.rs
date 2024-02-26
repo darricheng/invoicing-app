@@ -237,7 +237,7 @@ fn remove_alpha_channel_from_image(image: Image) -> Image {
             let new_red = ((1.0 - alpha) * 255.0 + alpha * red as f64) as u8;
             let new_green = ((1.0 - alpha) * 255.0 + alpha * green as f64) as u8;
             let new_blue = ((1.0 - alpha) * 255.0 + alpha * blue as f64) as u8;
-            return [new_red, new_green, new_blue];
+            [new_red, new_green, new_blue]
         })
         .collect::<Vec<[u8; 3]>>()
         .concat();
