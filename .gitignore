@@ -4,4 +4,4 @@ out
 .DS_Store
 *.log*
 .env*
-
+.svelte-kit
