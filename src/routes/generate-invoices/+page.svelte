@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Customer, InvoiceTableData, LineItem } from '$lib/types';
-	import { invoke } from '@tauri-apps/api';
 	import { onMount } from 'svelte';
 	import CustomerTable from './CustomerTable.svelte';
 
 	async function generateInvoices() {
+		// FIX: change invoke command
 		await invoke('generate_pdf_invoices', { data: customerData });
 	}
 
@@ -12,6 +12,7 @@
 
 	onMount(async () => {
 		const data: Array<{ customer: Customer; line_items: Array<LineItem> }> =
+			// FIX: change invoke command
 			await invoke('get_everything');
 		customerData = data.map((customer) => {
 			return {

@@ -6,7 +6,6 @@
 		type TableSource,
 		getModalStore
 	} from '@skeletonlabs/skeleton';
-	import { invoke } from '@tauri-apps/api';
 	import { onMount } from 'svelte';
 	import type { CustomerFormData, Customer } from '$lib/types';
 
@@ -31,6 +30,7 @@
 		);
 	}
 	async function fetchTableData() {
+		// FIX: change invoke command
 		tableData = (await invoke('list_customers')) as Array<Customer>;
 	}
 	async function addCustomer() {
@@ -49,6 +49,7 @@
 		})
 			.then(async (newCustomer) => {
 				if (!isCustomerFormaData(newCustomer)) return;
+				// FIX: change invoke command
 				let [id, numItems] = (await invoke('add_customer', {
 					data: {
 						customer: newCustomer.customer,
