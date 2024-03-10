@@ -1,5 +1,5 @@
 {
-  "extends": "@electron-toolkit/tsconfig/tsconfig.json",
+  "extends": ["@electron-toolkit/tsconfig/tsconfig.json", "./.svelte-kit/tsconfig.json"],
   "include": [
     "src/renderer/src/env.d.ts",
     "src/renderer/src/**/*",
@@ -12,6 +12,7 @@
     "strict": false,
     "allowJs": true,
     "checkJs": true,
+    "sourceMap": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"]
   },
   "references": [{ "path": "./tsconfig.node.json" }]
