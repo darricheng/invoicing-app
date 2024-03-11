@@ -2,24 +2,24 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('dbAPI', {
   listCustomers: () => {
-    ipcRenderer.invoke('listCustomers');
+    ipcRenderer.invoke('list-customers');
   },
   getCustomer: () => {
-    ipcRenderer.invoke('getCustomer');
+    ipcRenderer.invoke('get-customer');
   },
   addCustomer: () => {
-    ipcRenderer.invoke('addCustomer');
+    ipcRenderer.invoke('add-customer');
   },
   editCustomer: () => {
-    ipcRenderer.invoke('editCustomer');
+    ipcRenderer.invoke('edit-customer');
   },
   deleteCustomer: () => {
-    ipcRenderer.invoke('deleteCustomer');
+    ipcRenderer.invoke('delete-customer');
   },
   getEverything: () => {
-    ipcRenderer.invoke('getEverything');
+    ipcRenderer.invoke('get-everything');
   },
   generatePdfInvoices: () => {
-    ipcRenderer.invoke('generatePdfInvoices');
+    ipcRenderer.invoke('generate-pdf-invoices');
   },
 });
