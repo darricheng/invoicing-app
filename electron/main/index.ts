@@ -2,6 +2,15 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron';
 import { join } from 'path';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
+import {
+  addCustomer,
+  deleteCustomer,
+  editCustomer,
+  getCustomer,
+  getEverything,
+  listCustomers,
+} from './db';
+import { sendInvoices } from './invoice';
 
 function createWindow(): void {
   // Create the browser window.
@@ -51,7 +60,13 @@ app.whenReady().then(() => {
   });
 
   // IPC test
-  ipcMain.on('ping', () => console.log('pong'));
+  ipcMain.handle('list-customers', listCustomers);
+  ipcMain.handle('get-customer', getCustomer);
+  ipcMain.handle('add-customer', addCustomer);
+  ipcMain.handle('edit-customer', editCustomer);
+  ipcMain.handle('delete-customer', deleteCustomer);
+  ipcMain.handle('get-everything', getEverything);
+  ipcMain.handle('generate-pdf-invoices', sendInvoices);
 
   createWindow();
 
