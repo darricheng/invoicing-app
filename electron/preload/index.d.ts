@@ -1,8 +1,15 @@
-import { ElectronAPI } from '@electron-toolkit/preload';
+export interface IDbAPI {
+  listCustomers: () => void;
+  getCustomer: () => void;
+  addCustomer: () => void;
+  editCustomer: () => void;
+  deleteCustomer: () => void;
+  getEverything: () => void;
+  generatePdfInvoices: () => void;
+}
 
 declare global {
   interface Window {
-    electron: ElectronAPI;
-    api: unknown;
+    electron: IDbAPI;
   }
 }
