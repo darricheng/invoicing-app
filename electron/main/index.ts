@@ -30,6 +30,7 @@ function createWindow(): void {
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
   } else {
+    // TODO: probably have to change this when building for production
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 }
