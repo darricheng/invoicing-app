@@ -117,7 +117,6 @@ export async function getEverything(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent
 ): Promise<Array<FullCustomerWithLineItems>> {
-  console.log('calling getEverything');
   const data = await sequelize.models.Customer.findAll({ include: sequelize.models.LineItem });
   return data.map((el) => {
     const customer = el.dataValues;
