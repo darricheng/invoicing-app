@@ -4,11 +4,14 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import {
   addCustomer,
+  closeDb,
   deleteCustomer,
   editCustomer,
   getCustomer,
   getEverything,
+  initDb,
   listCustomers,
+  testDb,
 } from './db';
 import { sendInvoices } from './invoice';
 
@@ -59,7 +62,13 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
+  const dbPath = is.dev
+    ? app.getAppPath() + '/dev.sqlite'
+    : app.getPath('appData') + '/invoicing-app-data';
+  initDb(dbPath);
+  testDb();
+
+  // IPC handlers
   ipcMain.handle('list-customers', listCustomers);
   ipcMain.handle('get-customer', getCustomer);
   ipcMain.handle('add-customer', addCustomer);
@@ -86,5 +95,8 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('quit', () => {
+  closeDb();
+});
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
