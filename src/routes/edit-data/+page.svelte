@@ -79,10 +79,10 @@
         },
       };
       modalStore.trigger(editCustomerModal);
-    }).then(async (updatedCustomer) => {
-      if (!isCustomerFormaData(updatedCustomer)) return;
-      let [customersUpdated, lineItemsUpdated] = await window.dbAPI
-        .editCustomer({
+    })
+      .then(async (updatedCustomer) => {
+        if (!isCustomerFormaData(updatedCustomer)) return;
+        let [customersUpdated, lineItemsUpdated] = await window.dbAPI.editCustomer({
           customer: updatedCustomer.customer,
           line_items: updatedCustomer.line_items.map((el) => {
             return {
@@ -92,15 +92,15 @@
               customer_id: updatedCustomer.customer.id,
             };
           }),
-        })
-        .catch((err) => {
-          console.error(err);
-          // TODO: show error message to user
-        })
-        .finally(() => {
-          fetchTableData();
         });
-    });
+      })
+      .catch((err) => {
+        console.error(err);
+        // TODO: show error message to user
+      })
+      .finally(() => {
+        fetchTableData();
+      });
   }
 
   // LIFECYCLE

@@ -122,10 +122,17 @@ export async function addCustomer(
   data: FullCustomerForm
 ): Promise<[number, number]> {}
 export async function editCustomer(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent,
   data: FullCustomerForm
-): Promise<[number, number]> {}
-export async function deleteCustomer(_e: IpcMainInvokeEvent, id: number): Promise<number> {}
+): Promise<[number, number]> {
+  console.log('calling editCustomer');
+}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function deleteCustomer(_e: IpcMainInvokeEvent, id: number): Promise<number> {
+  await sequelize.models.Customer.destroy({ where: { id } });
+  return 1;
+}
 export async function getEverything(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent

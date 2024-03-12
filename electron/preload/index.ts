@@ -15,8 +15,8 @@ contextBridge.exposeInMainWorld('dbAPI', {
   editCustomer: () => {
     return ipcRenderer.invoke('edit-customer');
   },
-  deleteCustomer: () => {
-    return ipcRenderer.invoke('delete-customer');
+  deleteCustomer: (id) => {
+    return ipcRenderer.invoke('delete-customer', id);
   },
   getEverything: () => {
     return ipcRenderer.invoke('get-everything');
