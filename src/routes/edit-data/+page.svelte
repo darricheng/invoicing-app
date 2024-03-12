@@ -31,7 +31,6 @@
   }
   async function fetchTableData() {
     tableData = await window.dbAPI.listCustomers();
-    console.log(tableData);
   }
   async function addCustomer() {
     // Promise is used to get the response from the modal
