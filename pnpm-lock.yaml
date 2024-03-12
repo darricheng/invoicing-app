@@ -8,6 +8,9 @@ dependencies:
   '@electron-toolkit/utils':
     specifier: ^3.0.0
     version: 3.0.0(electron@28.2.6)
+  '@types/sequelize':
+    specifier: ^4.28.20
+    version: 4.28.20
   sequelize:
     specifier: ^6.37.1
     version: 6.37.1(sqlite3@5.1.7)
@@ -1061,6 +1064,10 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
+  /@types/bluebird@3.5.42:
+    resolution: {integrity: sha512-Jhy+MWRlro6UjVi578V/4ZGNfeCOcNCp0YaFNIUGFKlImowqwb1O/22wDVk3FDGMLqxdpOV3qQHD5fPEH4hK6A==}
+    dev: false
+
   /@types/cacheable-request@6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
     dependencies:
@@ -1068,6 +1075,12 @@ packages:
       '@types/keyv': 3.1.4
       '@types/node': 18.19.22
       '@types/responselike': 1.0.3
+
+  /@types/continuation-local-storage@3.2.7:
+    resolution: {integrity: sha512-Q7dPOymVpRG5Zpz90/o26+OAqOG2Sw+FED7uQmTrJNCF/JAPTylclZofMxZKd6W7g1BDPmT9/C/jX0ZcSNTQwQ==}
+    dependencies:
+      '@types/node': 18.19.22
+    dev: false
 
   /@types/cookie@0.6.0:
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
@@ -1100,6 +1113,10 @@ packages:
     dependencies:
       '@types/node': 18.19.22
 
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
+    dev: false
+
   /@types/ms@0.7.34:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
@@ -1129,6 +1146,15 @@ packages:
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
     dev: true
+
+  /@types/sequelize@4.28.20:
+    resolution: {integrity: sha512-XaGOKRhdizC87hDgQ0u3btxzbejlF+t6Hhvkek1HyphqCI4y7zVBIVAGmuc4cWJqGpxusZ1RiBToHHnNK/Edlw==}
+    dependencies:
+      '@types/bluebird': 3.5.42
+      '@types/continuation-local-storage': 3.2.7
+      '@types/lodash': 4.14.202
+      '@types/validator': 13.11.9
+    dev: false
 
   /@types/validator@13.11.9:
     resolution: {integrity: sha512-FCTsikRozryfayPuiI46QzH3fnrOoctTjvOYZkho9BTFLCOZ2rgZJHMOVgCOfttjPJcgOx52EpkY0CMfy87MIw==}

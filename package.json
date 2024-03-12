@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@electron-toolkit/utils": "^3.0.0",
+    "@types/sequelize": "^4.28.20",
     "sequelize": "^6.37.1",
     "sqlite3": "^5.1.7"
   },
