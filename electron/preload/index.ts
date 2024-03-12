@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
+// return keywords are necessary to return the data to the renderer
+// docs examples exclude the return keyword though
 contextBridge.exposeInMainWorld('dbAPI', {
   listCustomers: () => {
     return ipcRenderer.invoke('list-customers');
