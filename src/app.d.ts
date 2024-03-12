@@ -33,6 +33,6 @@ export interface IDbAPI {
 
 declare global {
   interface Window {
-    db: IDbAPI;
+    dbAPI: IDbAPI;
   }
 }

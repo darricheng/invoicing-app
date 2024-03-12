@@ -12,8 +12,7 @@
 
   onMount(async () => {
     const data: Array<{ customer: Customer; line_items: Array<LineItem> }> =
-      // FIX: change invoke command
-      await invoke('get_everything');
+      await window.dbAPI.getEverything();
     customerData = data.map((customer) => {
       return {
         customer: customer.customer,

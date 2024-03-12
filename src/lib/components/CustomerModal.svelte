@@ -25,10 +25,7 @@
 
   onMount(async () => {
     if (isExistingCustomer) {
-      // FIX: change invoke command
-      const [customer, lineItems] = (await invoke('get_customer', {
-        id: $modalStore[0].meta.customerId,
-      })) as [Customer, Array<LineItem>];
+      const [customer, lineItems] = await window.dbAPI.getCustomer($modalStore[0].meta.customerId);
       formData.customer.name = customer.name;
       formData.customer.phone = customer.phone;
       formData.customer.id = customer.id;
@@ -58,8 +55,7 @@
     if (id === null) {
       console.error('ERROR: Delete customer button pressed when customer id is null.');
     }
-    // FIX: change invoke command
-    await invoke('delete_customer', { id });
+    await window.dbAPI.deleteCustomer(id);
     // pass empty object to not  call edit_customer
     if ($modalStore[0].response) $modalStore[0].response({});
     modalStore.close();

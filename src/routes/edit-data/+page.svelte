@@ -30,8 +30,8 @@
     );
   }
   async function fetchTableData() {
-    // FIX: change invoke command
-    tableData = (await invoke('list_customers')) as Array<Customer>;
+    tableData = await window.dbAPI.listCustomers();
+    console.log(tableData);
   }
   async function addCustomer() {
     // Promise is used to get the response from the modal
@@ -49,16 +49,13 @@
     })
       .then(async (newCustomer) => {
         if (!isCustomerFormaData(newCustomer)) return;
-        // FIX: change invoke command
-        let [id, numItems] = (await invoke('add_customer', {
-          data: {
-            customer: newCustomer.customer,
-            // get rid of id field before submitting
-            line_items: newCustomer.line_items.map((el) => {
-              return { name: el.name, rate: el.rate };
-            }),
-          },
-        })) as [number, number];
+        let [id, numItems] = await window.dbAPI.addCustomer({
+          customer: newCustomer.customer,
+          // get rid of id field before submitting
+          line_items: newCustomer.line_items.map((el) => {
+            return { name: el.name, rate: el.rate, id: null, customer_id: null };
+          }),
+        });
       })
       .catch((err) => {
         console.error(err);
@@ -82,23 +79,28 @@
         },
       };
       modalStore.trigger(editCustomerModal);
-    })
-      .then(async (updatedCustomer) => {
-        if (!isCustomerFormaData(updatedCustomer)) return;
-        let [customersUpdated, lineItemsUpdated] = (await invoke('edit_customer', {
-          data: {
-            customer: updatedCustomer.customer,
-            line_items: updatedCustomer.line_items,
-          },
-        })) as [number, number];
-      })
-      .catch((err) => {
-        console.error(err);
-        // TODO: show error message to user
-      })
-      .finally(() => {
-        fetchTableData();
-      });
+    }).then(async (updatedCustomer) => {
+      if (!isCustomerFormaData(updatedCustomer)) return;
+      let [customersUpdated, lineItemsUpdated] = await window.dbAPI
+        .editCustomer({
+          customer: updatedCustomer.customer,
+          line_items: updatedCustomer.line_items.map((el) => {
+            return {
+              name: el.name,
+              rate: el.rate,
+              id: el.id,
+              customer_id: updatedCustomer.customer.id,
+            };
+          }),
+        })
+        .catch((err) => {
+          console.error(err);
+          // TODO: show error message to user
+        })
+        .finally(() => {
+          fetchTableData();
+        });
+    });
   }
 
   // LIFECYCLE
