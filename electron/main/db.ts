@@ -88,7 +88,17 @@ export function closeDb() {
   sequelize.close();
 }
 
-export async function listCustomers(_e: IpcMainInvokeEvent): Promise<Array<Customer>> {}
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function listCustomers(_e: IpcMainInvokeEvent): Promise<Array<Customer>> {
+  const data = await sequelize.models.Customer.findAll();
+  const customers = data.map((el) => {
+    const customer = el.dataValues;
+    delete customer.createdAt;
+    delete customer.updatedAt;
+    return customer;
+  });
+  return customers;
+}
 export async function getCustomer(
   _e: IpcMainInvokeEvent,
   id: number
