@@ -71,7 +71,7 @@ export async function initDb(path: string) {
   LineItem.belongsTo(Customer);
   // sync with db
   if (is.dev) {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: { drop: false } });
   } else {
     await sequelize.sync();
   }
