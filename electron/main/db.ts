@@ -118,9 +118,27 @@ export async function getCustomer(
   return [customer, line_items];
 }
 export async function addCustomer(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent,
   data: FullCustomerForm
-): Promise<[number, number]> {}
+): Promise<[number, number]> /* [customer_id, number_of_line_items] */ {
+  const customer = data.customer;
+  // supposedly, it should be possible to create the customer with their line items in one function call
+  // see: https://sequelize.org/docs/v6/advanced-association-concepts/creating-with-associations/
+  // but I couldn't get is to work
+  const customerRes = await sequelize.models.Customer.create({
+    ...customer,
+  });
+  const customerId = customerRes.dataValues.id;
+  const lineItems = data.line_items.map((el) => {
+    return {
+      ...el,
+      CustomerId: customerId,
+    };
+  });
+  const lineItemsRes = await sequelize.models.LineItem.bulkCreate([...lineItems]);
+  return [customerRes.dataValues.id, lineItemsRes.length];
+}
 export async function editCustomer(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent,
