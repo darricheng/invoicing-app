@@ -101,9 +101,22 @@ export async function listCustomers(_e: IpcMainInvokeEvent): Promise<Array<Custo
   return customers;
 }
 export async function getCustomer(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _e: IpcMainInvokeEvent,
   id: number
-): Promise<[Customer, Array<LineItem>]> {}
+): Promise<[Customer, Array<LineItem>]> {
+  const data = await sequelize.models.Customer.findByPk(id, { include: sequelize.models.LineItem });
+  const customer = data?.dataValues;
+  delete customer.createdAt;
+  delete customer.updatedAt;
+  const line_items = customer.LineItems.map((el: Model<any, any>) => {
+    const item = el.dataValues;
+    delete item.createdAt;
+    delete item.updatedAt;
+    return item;
+  });
+  return [customer, line_items];
+}
 export async function addCustomer(
   _e: IpcMainInvokeEvent,
   data: FullCustomerForm
