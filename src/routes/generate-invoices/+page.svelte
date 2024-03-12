@@ -48,7 +48,7 @@
 
 <div class="p-8">
   <div class="mb-8 grid grid-cols-2">
-    <h1 class="h1">Budget</h1>
+    <h1 class="h1">Generate Invoices</h1>
     <div class="flex flex-row-reverse">
       <button type="button" class="variant-filled btn" on:click={generateInvoices}
         >Generate Invoices</button
