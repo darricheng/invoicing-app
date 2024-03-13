@@ -1,5 +1,11 @@
 import { IpcMainInvokeEvent } from 'electron';
-import { Customer, FullCustomerForm, FullCustomerWithLineItems, LineItem } from './types';
+import {
+  Customer,
+  FullCustomerForm,
+  FullCustomerWithLineItems,
+  LineItem,
+  LineItemForm,
+} from './types';
 import { DataTypes, Sequelize } from 'sequelize';
 import { is } from '@electron-toolkit/utils';
 import { Model } from 'sequelize';
@@ -144,7 +150,61 @@ export async function editCustomer(
   _e: IpcMainInvokeEvent,
   data: FullCustomerForm
 ): Promise<[number, number]> {
-  console.log('calling editCustomer');
+  const customerToEdit = data.customer;
+  const lineItemsToEdit = data.line_items;
+
+  const [customerRowsEdited] = await sequelize.models.Customer.update(customerToEdit, {
+    where: { id: customerToEdit.id },
+  });
+
+  // get items from db, filter for new, changed, and deleted items, then execute queries accordingly
+  const [newLineItems, updatedLineItems] = lineItemsToEdit.reduce<
+    [Array<LineItemForm>, Array<LineItemForm>]
+  >(
+    (acc, el) => {
+      acc[el.id ? 1 : 0].push(el);
+      return acc;
+    },
+    [[], []]
+  );
+  const existingLineItems = await sequelize.models.LineItem.findAll({
+    where: { CustomerId: customerToEdit.id },
+    attributes: { include: ['id'] },
+  });
+  const existingLineItemIds = existingLineItems.map((el) => {
+    return el.dataValues.id;
+  });
+  const updatedLineItemIds = updatedLineItems.map((el) => {
+    return el.id;
+  });
+  const deletedLineItemIds = existingLineItemIds.filter((el) => {
+    return updatedLineItemIds.indexOf(el) === -1;
+  });
+
+  let lineItemRowsUpdated = 0;
+
+  // Updates
+  // will also run for unchanged items
+  for (const item of updatedLineItems) {
+    const [num] = await sequelize.models.LineItem.update(item, { where: { id: item.id } });
+    lineItemRowsUpdated += num;
+  }
+  // Adds
+  const lineItemsToAdd = newLineItems.map((el) => {
+    return {
+      ...el,
+      CustomerId: customerToEdit.id,
+    };
+  });
+  const addedRes = await sequelize.models.LineItem.bulkCreate(lineItemsToAdd);
+  lineItemRowsUpdated += addedRes.length;
+  // Deletes
+  const numItemsDeleted = await sequelize.models.LineItem.destroy({
+    where: { id: deletedLineItemIds },
+  });
+  lineItemRowsUpdated += numItemsDeleted;
+
+  return [customerRowsEdited, lineItemRowsUpdated];
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function deleteCustomer(_e: IpcMainInvokeEvent, id: number): Promise<number> {

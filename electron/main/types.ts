@@ -22,7 +22,7 @@ interface BaseCustomerForm {
   phone: string;
 }
 
-interface LineItemForm {
+export interface LineItemForm {
   id: number | null;
   name: string;
   rate: number;
