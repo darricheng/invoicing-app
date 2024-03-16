@@ -1,10 +1,10 @@
 import {
-  AddCustomer,
-  DeleteCustomer,
-  EditCustomer,
-  GetCustomer,
-  GetEverything,
-  ListCustomers,
+  type AddCustomer,
+  type DeleteCustomer,
+  type EditCustomer,
+  type GetCustomer,
+  type GetEverything,
+  type ListCustomers,
 } from '../electron/main/types.ts';
 
 // See https://kit.svelte.dev/docs/types#app
