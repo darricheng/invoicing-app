@@ -5,6 +5,7 @@ import {
   type GetCustomer,
   type GetEverything,
   type ListCustomers,
+  type SendInvoices,
 } from '../electron/main/types.ts';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -19,8 +20,6 @@ declare global {
   }
 }
 
-export {};
-
 export interface IDbAPI {
   listCustomers: ListCustomers;
   getCustomer: GetCustomer;
@@ -28,11 +27,15 @@ export interface IDbAPI {
   editCustomer: EditCustomer;
   deleteCustomer: DeleteCustomer;
   getEverything: GetEverything;
-  generatePdfInvoices: () => void; // TODO: add type for pdf invoices function
+}
+
+export interface IPdfAPI {
+  sendInvoices: SendInvoices;
 }
 
 declare global {
   interface Window {
     dbAPI: IDbAPI;
+    pdfAPI: IPdfAPI;
   }
 }

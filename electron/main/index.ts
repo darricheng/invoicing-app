@@ -75,7 +75,7 @@ app.whenReady().then(() => {
   ipcMain.handle('edit-customer', editCustomer);
   ipcMain.handle('delete-customer', deleteCustomer);
   ipcMain.handle('get-everything', getEverything);
-  ipcMain.handle('generate-pdf-invoices', sendInvoices);
+  ipcMain.handle('send-invoices', sendInvoices);
 
   createWindow();
 

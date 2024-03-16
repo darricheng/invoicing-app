@@ -21,7 +21,10 @@ contextBridge.exposeInMainWorld('dbAPI', {
   getEverything: () => {
     return ipcRenderer.invoke('get-everything');
   },
-  generatePdfInvoices: () => {
-    return ipcRenderer.invoke('generate-pdf-invoices');
+});
+
+contextBridge.exposeInMainWorld('pdfAPI', {
+  sendInvoices: (data) => {
+    return ipcRenderer.invoke('send-invoices', data);
   },
 });

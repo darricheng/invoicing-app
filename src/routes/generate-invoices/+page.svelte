@@ -4,8 +4,7 @@
   import CustomerTable from './CustomerTable.svelte';
 
   async function generateInvoices() {
-    // FIX: change invoke command
-    await invoke('generate_pdf_invoices', { data: customerData });
+    await window.pdfAPI.sendInvoices(customerData);
   }
 
   let customerData: Array<InvoiceTableData> = [];
