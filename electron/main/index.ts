@@ -13,7 +13,7 @@ import {
   listCustomers,
   testDb,
 } from './db';
-import { sendInvoices } from './invoice';
+import { sendInvoices, closePuppets } from './invoice';
 
 function createWindow(): void {
   // Create the browser window.
@@ -97,6 +97,7 @@ app.on('window-all-closed', () => {
 
 app.on('quit', () => {
   closeDb();
+  closePuppets();
 });
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
