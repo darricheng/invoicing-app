@@ -149,7 +149,7 @@
 
     #items-table {
       position: absolute;
-      left: 44mm;
+      left: 0;
       top: 82mm;
       padding-left: 8mm;
       border-left: 1mm solid var(--pink-line);
@@ -194,20 +194,26 @@
       width: calc(100% - var(--first-col-left-pad) - 2mm); /* table left + right padding */
       border-top: 0.25mm solid var(--grey-100);
     }
+    #items-table :is(thead, tbody) :is(th, td) {
+      vertical-align: top;
+    }
     #items-table tfoot :is(td, th) {
       font-size: 4.5mm;
-      /* vertical-align: baseline; */
+      vertical-align: baseline;
     }
     #items-table tr :first-child {
       font-weight: 600;
       text-align: left;
-      width: 64mm;
+      width: 48mm;
     }
-    #items-table :is(thead, tbody) tr :nth-child(2) {
+    #items-table tr :nth-child(2) {
+      text-align: left;
+    }
+    #items-table :is(thead, tbody) tr :nth-child(3) {
       text-align: center;
       width: 18mm;
     }
-    #items-table :is(:is(thead, tbody) tr :is(:nth-child(3), :nth-child(4)), tfoot tr :last-child) {
+    #items-table :is(:is(thead, tbody) tr :is(:nth-child(4), :nth-child(5)), tfoot tr :last-child) {
       text-align: right;
       width: 28mm;
     }
@@ -239,6 +245,7 @@
       <thead>
         <tr>
           <th>ITEM DESCRIPTION</th>
+          <th>DETAILS</th>
           <th>QTY</th>
           <th>RATE</th>
           <th>AMOUNT</th>
@@ -247,102 +254,11 @@
       <tbody>
         <tr>
           <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-        <tr>
-          <th>Item Name</th>
+          <td>
+            Some details about the class that is very very very very very very very very very very
+            very very very very very very very very very very very very very very very very very
+            very very very very very very long
+          </td>
           <td>1</td>
           <td>$3,000.00</td>
           <td>$3,000.00</td>
