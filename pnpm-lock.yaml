@@ -11,6 +11,9 @@ dependencies:
   '@types/sequelize':
     specifier: ^4.28.20
     version: 4.28.20
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   handlebars:
     specifier: ^4.7.8
     version: 4.7.8
@@ -2192,6 +2195,10 @@ packages:
   /data-uri-to-buffer@6.0.2:
     resolution: {integrity: sha512-7hvf7/GW8e86rW0ptuwS3OcBGDjIi6SZva7hCyWC0yYry2cOPmLIjXAUHI6DK2HsnwJd9ifmt57i8eV2n4YNpw==}
     engines: {node: '>= 14'}
+    dev: false
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /debug@4.3.4:
