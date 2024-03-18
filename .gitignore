@@ -6,3 +6,13 @@ out
 .env*
 .svelte-kit
 *.sqlite
+
+# folder to contain pdfs created in dev
+invoices
+
+# images for use in dev
+logo.png
+qrcode.jpg
+
+# WA web lib generated artefacts
+.wwebjs_cache
