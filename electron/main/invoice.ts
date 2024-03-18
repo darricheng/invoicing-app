@@ -9,6 +9,27 @@ import dayjs from 'dayjs';
 
 let waClient: waweb.Client;
 
+export async function initWA() {
+  console.log('creating whatsapp client');
+  waClient = new waweb.Client({});
+  console.log('getting QR code');
+  waClient.on('qr', (qr) => {
+    console.log('QR RECEIVED: ', qr);
+    QRCode.toString(qr, { type: 'terminal' }, (err, url) => {
+      console.log(url);
+    });
+    QRCode.toFile(app.getAppPath() + '/qrcode.jpg', qr);
+  });
+  waClient.on('ready', () => {
+    console.log('WHATSAPP CLIENT IS READY');
+  });
+  waClient.initialize();
+
+  process.on('exit', closeWA);
+  process.on('SIGTERM', closeWA);
+  process.on('uncaughtException', closeWA);
+}
+
 export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTableData>) {
   const templateSource = await fs.readFile(app.getAppPath() + '/default-invoice-template.hbs', {
     encoding: 'utf8',
@@ -34,7 +55,8 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
     address: import.meta.env.MAIN_VITE_COMPANY_ADDRESS,
     phone: import.meta.env.MAIN_VITE_COMPANY_PHONE,
   };
-  console.log(company);
+
+  const phonePathMap: { [key: string]: string } = {};
 
   const browser = await puppeteer.launch();
 
@@ -73,13 +95,16 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
     await page.waitForNetworkIdle();
 
     console.log('generating pdf...');
+    const path =
+      app.getAppPath() +
+      '/invoices/' +
+      today.format('YYYYMMDD-HHmmss') +
+      entry.customer.name +
+      '.pdf';
+    phonePathMap[entry.customer.phone] = path;
+
     await page.pdf({
-      path:
-        app.getAppPath() +
-        '/invoices/' +
-        today.format('YYYYMMDD-HHmmss') +
-        entry.customer.name +
-        '.pdf',
+      path,
       margin: {
         top: '10mm',
         right: '10mm',
@@ -91,31 +116,16 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
   }
   await browser.close();
 
-  // console.log('creating whatsapp client');
-  // waClient = new waweb.Client({});
-  // console.log('getting QR code');
-  // waClient.on('qr', (qr) => {
-  //   console.log('QR RECEIVED: ', qr);
-  //   QRCode.toString(qr, { type: 'terminal' }, (err, url) => {
-  //     console.log(url);
-  //   });
-  //   QRCode.toFile(app.getAppPath() + '/qrcode.jpg', qr);
-  // });
-  // waClient.on('ready', () => {
-  //   console.log('WHATSAPP CLIENT IS READY');
-  // });
-  // waClient.on('message_create', async (msg) => {
-  //   console.log(msg);
-  //   if (msg.body === '!ping') {
-  //     const data = await fs.readFile(app.getAppPath() + '/pdf.html', { encoding: 'base64' });
-  //     waClient.sendMessage(msg.from, new waweb.MessageMedia('application/pdf', data, 'test.pdf'));
-  //   }
-  // });
-  // waClient.initialize();
-  //
-  // process.on('exit', closeWA);
-  // process.on('SIGTERM', closeWA);
-  // process.on('uncaughtException', closeWA);
+  for (const phone in phonePathMap) {
+    const data = await fs.readFile(phonePathMap[phone], {
+      encoding: 'base64',
+    });
+    const fileName = phonePathMap[phone].split('/').pop();
+    await waClient.sendMessage(
+      '65' + phone + '@c.us', // WARN: this severely constrains how the phone numbers need to be stored
+      new waweb.MessageMedia('application/pdf', data, fileName)
+    );
+  }
 }
 
 function dollarFormatter(num: number): string {
@@ -123,7 +133,7 @@ function dollarFormatter(num: number): string {
 }
 
 async function closeWA() {
-  // await waClient.destroy();
+  await waClient.destroy();
 }
 
 export async function closePuppets() {

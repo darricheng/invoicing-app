@@ -13,7 +13,7 @@ import {
   listCustomers,
   testDb,
 } from './db';
-import { sendInvoices, closePuppets } from './invoice';
+import { sendInvoices, closePuppets, initWA } from './invoice';
 
 function createWindow(): void {
   // Create the browser window.
@@ -76,6 +76,9 @@ app.whenReady().then(() => {
   ipcMain.handle('delete-customer', deleteCustomer);
   ipcMain.handle('get-everything', getEverything);
   ipcMain.handle('send-invoices', sendInvoices);
+
+  // Set up WhatsApp Client
+  initWA();
 
   createWindow();
 
