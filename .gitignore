@@ -16,3 +16,4 @@ qrcode.jpg
 
 # WA web lib generated artefacts
 .wwebjs_cache
+.wwebjs_auth
