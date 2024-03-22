@@ -1,38 +1,25 @@
-# create-svelte
+# Invoicing App
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A feature bloat-free app to help you manage your repeating customer invoice data, and automatically create and send invoices via WhatsApp at the click of a button. Everything is done locally, an internet connection is required only to send the invoice via WhatsApp!
 
-## Creating a project
+## Problem Statement
 
-If you're seeing this, you've probably already done this step. Congrats!
+As a solo entrepreneur, my time and monetary resources are limited. Creating invoices manually one-by-one is tedious and takes up too much time, and most of the invoicing solutions available out there are too expensive for too many features that I do not need. I just want to send invoices easily via WhatsApp with the click of a button.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Features
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- Store templates of each customer that will be reused when creating an invoice for that customer
+- One-click sending of invoices after adjusting the line item data
 
-## Developing
+## Tech Stack
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- Electron
+- SvelteKit
+- SQLite
+- Puppeteer
 
-```bash
-npm run dev
+### Rationale
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Cost was a primary factor in choosing the technologies to solve this problem. To send a PDF via WhatsApp in a cost-free manner, we would ideally do everything locally without the need to utilise any services provided by other companies. Thus I chose to use Electron for the UI and and SQLite to manage the data.
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+The idea behind this app is to generate the PDF locally using [puppeteer](https://pptr.dev/), so that we have flexibility to change the invoice template easily with HTML and CSS, then send it again using puppeteer, this time with a library called [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js).
