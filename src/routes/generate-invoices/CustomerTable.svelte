@@ -35,7 +35,11 @@
   <table class="table">
     <thead class="table-head">
       <tr>
-        <th role="columnheader">{data.customer.name}</th>
+        <th class="w-1/6" role="columnheader" aria-colindex="1">{data.customer.name}</th>
+        <th class="w-1/6" role="columnheader" aria-colindex="2" tabindex="-1">
+          Send?
+          <input class="checkbox" type="checkbox" bind:checked={data.selected} />
+        </th>
         <!-- filler col so that customer name aligns with everything else -->
         <th colspan="4"></th>
       </tr>

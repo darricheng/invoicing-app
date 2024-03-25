@@ -4,7 +4,8 @@
   import CustomerTable from './CustomerTable.svelte';
 
   async function generateInvoices() {
-    await window.pdfAPI.sendInvoices(customerData);
+    const toSend = customerData.filter((el) => el.selected);
+    await window.pdfAPI.sendInvoices(toSend);
   }
 
   let customerData: Array<InvoiceTableData> = [];
@@ -14,6 +15,7 @@
       await window.dbAPI.getEverything();
     customerData = data.map((customer) => {
       return {
+        selected: true,
         customer: customer.customer,
         line_items: customer.line_items.map((item) => {
           return {

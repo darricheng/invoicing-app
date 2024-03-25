@@ -33,4 +33,5 @@ interface InvoiceLineItem {
 export interface InvoiceTableData {
   customer: Customer;
   line_items: Array<InvoiceLineItem>;
+  selected: boolean;
 }
