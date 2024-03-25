@@ -20,7 +20,7 @@
       name: '',
       phone: '',
     },
-    line_items: [{ name: '', rate: 0, id: null }],
+    line_items: [{ name: '', rate: 0, id: null, details: '' }],
   };
 
   onMount(async () => {
@@ -44,7 +44,7 @@
   const cForm = 'border border-surface-500 p-4 space-y-4 rounded-container-token';
 
   function handleInsertNewLineItem() {
-    formData.line_items = [...formData.line_items, { name: '', rate: 0, id: null }];
+    formData.line_items = [...formData.line_items, { name: '', rate: 0, id: null, details: '' }];
   }
   function handleDeleteLineItem(i: number) {
     formData.line_items = formData.line_items.toSpliced(i, 1);
@@ -120,6 +120,14 @@
             step="0.01"
             bind:value={item.rate}
             placeholder="e.g. 80.75"
+          />
+        </label>
+        <label class="label">
+          <span>Details</span>
+          <textarea
+            class="textarea"
+            bind:value={item.details}
+            placeholder="Any addtional details that to include for this line item"
           />
         </label>
         <hr />

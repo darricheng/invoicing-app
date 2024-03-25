@@ -23,7 +23,7 @@
             _rate: 0,
             _quantity: 0,
             amount: 0,
-            details: '',
+            details: item.details,
             get quantity() {
               return this._quantity;
             },

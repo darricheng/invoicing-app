@@ -26,7 +26,10 @@
       'id' in obj.customer &&
       'line_items' in obj &&
       (obj.line_items.length === 0 ||
-        ('name' in obj.line_items[0] && 'rate' in obj.line_items[0] && 'id' in obj.line_items[0]))
+        ('name' in obj.line_items[0] &&
+          'rate' in obj.line_items[0] &&
+          'id' in obj.line_items[0] &&
+          'details' in obj.line_items[0]))
     );
   }
   async function fetchTableData() {
@@ -52,7 +55,13 @@
           customer: newCustomer.customer,
           // get rid of id field before submitting
           line_items: newCustomer.line_items.map((el) => {
-            return { name: el.name, rate: el.rate, id: null, customer_id: null };
+            return {
+              name: el.name,
+              rate: el.rate,
+              id: null,
+              customer_id: null,
+              details: el.details,
+            };
           }),
         });
       })
@@ -89,6 +98,7 @@
               rate: el.rate,
               id: el.id,
               customer_id: updatedCustomer.customer.id,
+              details: el.details,
             };
           }),
         });

@@ -11,6 +11,7 @@ export interface LineItem {
   name: string;
   rate: number;
   customer_id: number;
+  details: string;
 }
 
 export interface FullCustomerWithLineItems {
@@ -29,6 +30,7 @@ export interface LineItemForm {
   name: string;
   rate: number;
   customer_id: number | null;
+  details: string;
 }
 
 export interface FullCustomerForm {
