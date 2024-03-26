@@ -29,6 +29,10 @@
     };
     data.line_items = [...data.line_items, newItem];
   }
+  function handleDeleteLineItem(itemIndex: number) {
+    data.line_items.splice(itemIndex, 1);
+    data.line_items = data.line_items;
+  }
 </script>
 
 <div class="table-container">
@@ -57,8 +61,15 @@
             <input class="input text-center" type="number" step="0.1" bind:value={item.quantity} />
           </td>
           <td class="w-1/6" role="gridcell" aria-colindex="4" tabindex="-1">{item.amount}</td>
-          <td class="w-2/6" role="gridcell" aria-colindex="5" tabindex="-1">
+          <td class="w-3/12" role="gridcell" aria-colindex="5" tabindex="-1">
             <textarea class="textarea" bind:value={item.details} />
+          </td>
+          <td class="w-1/12" role="gridcell" aria-colindex="6" tabindex="-1">
+            <button
+              type="button"
+              class="variant-soft-error btn btn-sm"
+              on:click={() => handleDeleteLineItem(itemIndex)}>Del</button
+            >
           </td>
         </tr>
       {/each}

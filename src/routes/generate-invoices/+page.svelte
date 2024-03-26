@@ -62,7 +62,8 @@
           <th class="w-1/6" role="columnheader">Rate</th>
           <th class="w-1/6" role="columnheader">Quantity</th>
           <th class="w-1/6" role="columnheader">Amount</th>
-          <th class="w-2/6" role="columnheader">Details</th>
+          <th class="w-3/12" role="columnheader">Details</th>
+          <th class="w-1/12" role="columnheader">Del</th>
         </tr>
       </thead>
     </table>
