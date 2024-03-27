@@ -6,13 +6,16 @@ import waweb from 'whatsapp-web.js';
 import QRCode from 'qrcode';
 import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
+import { is } from '@electron-toolkit/utils';
 
 let waClient: waweb.Client;
 
 export async function initWA() {
-  console.log('creating whatsapp client');
-  waClient = new waweb.Client({});
-  console.log('getting QR code');
+  // force a login every time for dev so that we have to login again to send messages
+  // TODO: set an appropriate path for the LocalAuth cache
+  const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
+  waClient = new waweb.Client({ authStrategy });
+
   waClient.on('qr', (qr) => {
     console.log('QR RECEIVED: ', qr);
     QRCode.toString(qr, { type: 'terminal' }, (err, url) => {
