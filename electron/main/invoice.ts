@@ -99,6 +99,7 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
       app.getAppPath() +
       '/invoices/' +
       today.format('YYYYMMDD-HHmmss') +
+      '-' +
       entry.customer.name +
       '.pdf';
     phonePathMap[entry.customer.phone] = path;
