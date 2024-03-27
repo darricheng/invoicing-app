@@ -4,7 +4,19 @@
   import CustomerTable from './CustomerTable.svelte';
 
   async function generateInvoices() {
-    const toSend = customerData.filter((el) => el.selected);
+    const toSend = $generateInvoicesData.filter((el) => el.selected);
+    // TODO: inform user about all errors instead of failing at the first error
+    for (const customer of toSend) {
+      for (const { name, rate, quantity } of customer.line_items) {
+        // name is not empty string or 0, rate and quantity aren't 0
+        if (!name || rate === 0 || quantity === 0) {
+          console.error('found invalid data for generating invoices');
+          console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
+          return;
+        }
+      }
+    }
+    // console.log(toSend);
     await window.pdfAPI.sendInvoices(toSend);
   }
 
