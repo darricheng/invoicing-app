@@ -22,6 +22,18 @@
     console.log(toSend);
     await window.pdfAPI.sendInvoices(toSend);
   }
+  function selectAll() {
+    $generateInvoicesData = $generateInvoicesData.map((el) => {
+      el.selected = true;
+      return el;
+    });
+  }
+  function deselectAll() {
+    $generateInvoicesData = $generateInvoicesData.map((el) => {
+      el.selected = false;
+      return el;
+    });
+  }
 
   onMount(async () => {
     const data: Array<{ customer: Customer; line_items: Array<LineItem> }> =
@@ -61,10 +73,12 @@
 <div class="p-8">
   <div class="mb-8 grid grid-cols-2">
     <h1 class="h1">Generate Invoices</h1>
-    <div class="flex flex-row-reverse">
+    <div class="flex flex-row-reverse space-x-4 space-x-reverse">
       <button type="button" class="variant-filled btn" on:click={generateInvoices}
         >Generate Invoices</button
       >
+      <button type="button" class="variant-filled btn" on:click={selectAll}>Select All</button>
+      <button type="button" class="variant-filled btn" on:click={deselectAll}>Deselect All</button>
     </div>
   </div>
   <div class="table-container">
