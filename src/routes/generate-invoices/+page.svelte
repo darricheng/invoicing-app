@@ -33,7 +33,7 @@
         line_items: customer.line_items.map((item) => {
           return {
             ...item,
-            _rate: 0,
+            _rate: item.rate,
             _quantity: 0,
             amount: 0,
             details: item.details,
