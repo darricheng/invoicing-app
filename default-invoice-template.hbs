@@ -222,47 +222,48 @@
                 <h3>Payable {{ totalAmount }}</h3>
                 <p>Due {{ dates.due }}</p>
                 <p>Issued {{ dates.today }}</p>
-                <p>Ref. {{ invoiceNumber }}</p>
-            </div>
-            <div id='billed-to'>
-                <h3>Billed to</h3>
-                <p>{{ customer.name }}</p>
-                <p>{{ customer.phone }}</p>
-            </div>
-            <div id='from'>
-                <h3>From</h3>
-                <p>{{ company.name }}</p>
-                <p>{{ company.address }}</p>
-                <p>{{ company.phone }}</p>
-            </div>
-        </section>
-        <table id='items-table'>
-            <thead>
+                {{!-- <p>Ref. {{ invoiceNumber }}</p>
+            --}}
+        </div>
+        <div id='billed-to'>
+            <h3>Billed to</h3>
+            <p>{{ customer.name }}</p>
+            <p>{{ customer.phone }}</p>
+        </div>
+        <div id='from'>
+            <h3>From</h3>
+            <p>{{ company.name }}</p>
+            <p>{{ company.address }}</p>
+            <p>{{ company.phone }}</p>
+        </div>
+    </section>
+    <table id='items-table'>
+        <thead>
+            <tr>
+                <th>ITEM DESCRIPTION</th>
+                <th>DETAILS</th>
+                <th>QTY</th>
+                <th>RATE</th>
+                <th>AMOUNT</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each lineItems }}
                 <tr>
-                    <th>ITEM DESCRIPTION</th>
-                    <th>DETAILS</th>
-                    <th>QTY</th>
-                    <th>RATE</th>
-                    <th>AMOUNT</th>
+                    <th>{{ this.name }}</th>
+                    <td>{{ this.details }}</td>
+                    <td>{{ this.quantity }}</td>
+                    <td>{{ this.rate }}</td>
+                    <td>{{ this.amount }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {{#each lineItems }}
-                    <tr>
-                        <th>{{ this.name }}</th>
-                        <td>{{ this.details }}</td>
-                        <td>{{ this.quantity }}</td>
-                        <td>{{ this.rate }}</td>
-                        <td>{{ this.amount }}</td>
-                    </tr>
-                {{/each}}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan='4'>Total ({{ currency }})</th>
-                    <td>{{ totalAmount }}</td>
-                </tr>
-            </tfoot>
-        </table>
-    </body>
+            {{/each}}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan='4'>Total ({{ currency }})</th>
+                <td>{{ totalAmount }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
 </html>
