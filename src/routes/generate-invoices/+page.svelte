@@ -3,6 +3,9 @@
   import { onMount } from 'svelte';
   import CustomerTable from './CustomerTable.svelte';
 
+  import { writable, type Writable } from 'svelte/store';
+  const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
+
   async function generateInvoices() {
     const toSend = $generateInvoicesData.filter((el) => el.selected);
     // TODO: inform user about all errors instead of failing at the first error
@@ -16,16 +19,14 @@
         }
       }
     }
-    // console.log(toSend);
+    console.log(toSend);
     await window.pdfAPI.sendInvoices(toSend);
   }
-
-  let customerData: Array<InvoiceTableData> = [];
 
   onMount(async () => {
     const data: Array<{ customer: Customer; line_items: Array<LineItem> }> =
       await window.dbAPI.getEverything();
-    customerData = data.map((customer) => {
+    $generateInvoicesData = data.map((customer) => {
       return {
         selected: true,
         customer: customer.customer,
@@ -80,7 +81,7 @@
       </thead>
     </table>
   </div>
-  {#each customerData as data}
+  {#each $generateInvoicesData as data}
     <div class="mt-4">
       <CustomerTable {data} />
     </div>
