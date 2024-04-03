@@ -4,23 +4,44 @@
   import CustomerTable from './CustomerTable.svelte';
 
   import { writable, type Writable } from 'svelte/store';
+  import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+
   const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
+  const modalStore = getModalStore();
 
   async function generateInvoices() {
     const toSend = $generateInvoicesData.filter((el) => el.selected);
-    // TODO: inform user about all errors instead of failing at the first error
-    for (const customer of toSend) {
-      for (const { name, rate, quantity } of customer.line_items) {
-        // name is not empty string or 0, rate and quantity aren't 0
-        if (!name || rate === 0 || quantity === 0) {
-          console.error('found invalid data for generating invoices');
-          console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
-          return;
+    new Promise((resolve) => {
+      const customerNames = toSend.map((el) => {
+        return el.customer.name;
+      });
+      const confirmationModal: ModalSettings = {
+        type: 'component',
+        component: 'confirmationModal',
+        title: 'Confirmation',
+        response: (res) => resolve(res),
+        meta: {
+          customers: customerNames,
+        },
+      };
+      modalStore.trigger(confirmationModal);
+    }).then(async (confirmSend) => {
+      // NOTE: confirmSend is undefined if model was closed by clicking outside
+      if (!confirmSend) return;
+      // TODO: inform user about all errors instead of failing at the first error
+      for (const customer of toSend) {
+        for (const { name, rate, quantity } of customer.line_items) {
+          // name is not empty string or 0, rate and quantity aren't 0
+          if (!name || rate === 0 || quantity === 0) {
+            console.error('found invalid data for generating invoices');
+            console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
+            return;
+          }
         }
       }
-    }
-    console.log(toSend);
-    await window.pdfAPI.sendInvoices(toSend);
+      console.log(toSend);
+      await window.pdfAPI.sendInvoices(toSend);
+    });
   }
   function selectAll() {
     $generateInvoicesData = $generateInvoicesData.map((el) => {

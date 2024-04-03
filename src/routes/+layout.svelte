@@ -10,6 +10,7 @@
   } from '@skeletonlabs/skeleton';
   import '../app.pcss';
   import CustomerModal from '$lib/components/CustomerModal.svelte';
+  import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
 
   initializeStores();
 
@@ -19,6 +20,7 @@
       // Provide a template literal for the default component slot
       slot: '<p>Placeholder</p>',
     },
+    confirmationModal: { ref: ConfirmationModal },
   };
 </script>
 
