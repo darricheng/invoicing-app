@@ -74,13 +74,15 @@
         </tr>
       {/each}
       <tr>
-        <td>
-          <button class="variant-ghost-surface btn" on:click={handleAddCustomLineItem} type="button"
-            >Add Custom Line Item</button
+        <td class="w-1/6">
+          <button
+            class="variant-soft-tertiary btn w-full text-wrap"
+            on:click={handleAddCustomLineItem}
+            type="button">Add Line Item</button
           >
         </td>
         <!-- filler col so that rest of row is filled with correct color -->
-        <td colspan="5"></td>
+        <td colspan="5" class="w-5/6"></td>
       </tr>
     </tbody>
     <tfoot class="table-foot"><tr></tr></tfoot>
