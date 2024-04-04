@@ -14,7 +14,13 @@ export async function initWA() {
   // force a login every time for dev so that we have to login again to send messages
   // TODO: set an appropriate path for the LocalAuth cache
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
-  waClient = new waweb.Client({ authStrategy });
+  waClient = new waweb.Client({
+    authStrategy,
+    // NOTE: for some reason, I started needing to pin a version here
+    // otherwise the wweb lib will start throwing errors
+    // weird because this wasn't previously needed
+    webVersion: '2.2412.54',
+  });
 
   waClient.on('qr', (qr) => {
     console.log('QR RECEIVED: ', qr);
