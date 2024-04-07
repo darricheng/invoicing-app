@@ -11,6 +11,10 @@ As a solo entrepreneur, my time and monetary resources are limited. Creating inv
 - Store templates of each customer that will be reused when creating an invoice for that customer
 - One-click sending of invoices after adjusting the line item data
 
+### Video Demo
+
+https://github.com/darricheng/invoicing-app/assets/77005864/39878ea8-75ef-4cf6-bcbd-c513010184b1 <!-- github will automatically make the video playable in the readme -->
+
 ## Tech Stack
 
 - Electron
