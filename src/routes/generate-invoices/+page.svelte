@@ -95,11 +95,15 @@
   <div class="mb-8 grid grid-cols-2">
     <h1 class="h1">Generate Invoices</h1>
     <div class="flex flex-row-reverse space-x-4 space-x-reverse">
-      <button type="button" class="variant-filled btn" on:click={generateInvoices}
-        >Generate Invoices</button
+      <button type="button" class="variant-filled-primary btn" on:click={generateInvoices}
+        >Send Invoices</button
       >
-      <button type="button" class="variant-filled btn" on:click={selectAll}>Select All</button>
-      <button type="button" class="variant-filled btn" on:click={deselectAll}>Deselect All</button>
+      <button type="button" class="variant-ghost-secondary btn" on:click={selectAll}
+        >Select All</button
+      >
+      <button type="button" class="variant-ghost-secondary btn" on:click={deselectAll}
+        >Deselect All</button
+      >
     </div>
   </div>
   <div class="table-container">
