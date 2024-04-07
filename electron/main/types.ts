@@ -1,4 +1,4 @@
-import { type InvoiceTableData } from '../../src/lib/types';
+import { type GenerateInvoicesData } from '../../src/lib/types';
 
 export interface Customer {
   id: number;
@@ -44,4 +44,4 @@ export type AddCustomer = (data: FullCustomerForm) => Promise<[number, number]>;
 export type EditCustomer = (data: FullCustomerForm) => Promise<[number, number]>; // [customer_rows_updated, line_item_rows_updated]
 export type DeleteCustomer = (id: number) => Promise<number>; // should just return 1 on successful delete
 export type GetEverything = () => Promise<Array<FullCustomerWithLineItems>>;
-export type SendInvoices = (data: Array<InvoiceTableData>) => Promise<number>;
+export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;

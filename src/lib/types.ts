@@ -36,3 +36,8 @@ export interface InvoiceTableData {
   line_items: Array<InvoiceLineItem>;
   selected: boolean;
 }
+
+export interface GenerateInvoicesData {
+  invoiceData: Array<InvoiceTableData>;
+  message: string;
+}

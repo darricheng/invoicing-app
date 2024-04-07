@@ -10,13 +10,19 @@
   const modalStore = getModalStore();
 
   const customerNames: Array<string> = $modalStore[0].meta.customers;
+  let sendMessage = false;
+  let message = '';
 
   function handleConfirm(): void {
-    if ($modalStore[0].response) $modalStore[0].response(true);
+    if ($modalStore[0].response) {
+      console.log('sendMessage', sendMessage);
+      const responseMsg = sendMessage ? message : '';
+      $modalStore[0].response({ confirm: true, message: responseMsg });
+    }
     modalStore.close();
   }
   function handleCancel() {
-    if ($modalStore[0].response) $modalStore[0].response(false);
+    if ($modalStore[0].response) $modalStore[0].response({ confirm: false });
     modalStore.close();
   }
   // TODO: need to handle modal closing via other means
@@ -40,6 +46,20 @@
         </li>
       {/each}
     </ul>
+    <div class="space-y-4">
+      <h2 class="text-lg font-bold">Accompanying Message</h2>
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" class="checkbox" bind:checked={sendMessage} />
+        <p>Check to send input as message to all customers</p>
+      </label>
+      <!-- TODO: disable textarea if checkbox is unchecked -->
+      <textarea
+        class="textarea"
+        title="Message"
+        placeholder="Here's your invoice for April"
+        bind:value={message}
+      />
+    </div>
     <div class="text-right">
       <button class="btn {parent.buttonNeutral}" type="button" on:click={handleCancel}
         >Cancel</button

@@ -25,9 +25,11 @@
         },
       };
       modalStore.trigger(confirmationModal);
-    }).then(async (confirmSend) => {
+    }).then(async (response: { confirm: boolean; message?: string } | undefined) => {
       // NOTE: confirmSend is undefined if model was closed by clicking outside
-      if (!confirmSend) return;
+      console.log(response);
+      if (!response || !response.confirm) return;
+
       // TODO: inform user about all errors instead of failing at the first error
       for (const customer of toSend) {
         for (const { name, rate, quantity } of customer.line_items) {
@@ -40,7 +42,7 @@
         }
       }
       console.log(toSend);
-      await window.pdfAPI.sendInvoices(toSend);
+      await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });
     });
   }
   function selectAll() {

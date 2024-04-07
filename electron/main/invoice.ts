@@ -1,5 +1,5 @@
 import { IpcMainInvokeEvent, app } from 'electron';
-import { type InvoiceTableData } from '../../src/lib/types';
+import { GenerateInvoicesData } from '../../src/lib/types';
 import puppeteer from 'puppeteer';
 import fs from 'node:fs/promises';
 import waweb from 'whatsapp-web.js';
@@ -39,7 +39,10 @@ export async function initWA() {
   process.on('uncaughtException', closeWA);
 }
 
-export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTableData>) {
+export async function sendInvoices(_e: IpcMainInvokeEvent, data: GenerateInvoicesData) {
+  const invoiceData = data.invoiceData;
+  const message = data.message.trim();
+
   const templateSource = await fs.readFile(app.getAppPath() + '/default-invoice-template.hbs', {
     encoding: 'utf8',
   });
@@ -60,6 +63,7 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
   const logoSrc = 'data:image/png;base64,' + logo;
 
   const company = {
+    // NOTE: using env vars to store company details is a temporary measure
     name: import.meta.env.MAIN_VITE_COMPANY_NAME,
     address: import.meta.env.MAIN_VITE_COMPANY_ADDRESS,
     phone: import.meta.env.MAIN_VITE_COMPANY_PHONE,
@@ -69,7 +73,7 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
 
   const browser = await puppeteer.launch();
 
-  for (const entry of data) {
+  for (const entry of invoiceData) {
     console.log('creating pdf for: ', entry.customer.name);
     const totalAmount = dollarFormatter(
       entry.line_items.reduce((acc, item) => {
@@ -131,10 +135,16 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: Array<InvoiceTa
       encoding: 'base64',
     });
     const fileName = phonePathMap[phone].split('/').pop();
-    await waClient.sendMessage(
-      '65' + phone + '@c.us', // WARN: this severely constrains how the phone numbers need to be stored
-      new waweb.MessageMedia('application/pdf', data, fileName)
-    );
+    // if (is.dev) {
+    //   console.warn('DEV MODE');
+    //   console.log('pretending to send ' + fileName + ' to ' + phone);
+    // } else {
+    const chatId = '65' + phone + '@c.us'; // WARN: this severely constrains how the phone numbers need to be stored
+    await waClient.sendMessage(chatId, new waweb.MessageMedia('application/pdf', data, fileName));
+    if (message.length > 0) {
+      await waClient.sendMessage(chatId, message);
+    }
+    // }
   }
 }
 
