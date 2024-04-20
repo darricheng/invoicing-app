@@ -43,6 +43,13 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: GenerateInvoice
   const invoiceData = data.invoiceData;
   const message = data.message.trim();
 
+  // See: https://stackoverflow.com/a/12397602
+  Handlebars.registerHelper('breaklines', function (text) {
+    text = Handlebars.Utils.escapeExpression(text);
+    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+    return new Handlebars.SafeString(text);
+  });
+
   const templateSource = await fs.readFile(app.getAppPath() + '/default-invoice-template.hbs', {
     encoding: 'utf8',
   });
