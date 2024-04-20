@@ -91,8 +91,8 @@ export async function testDb() {
   //   console.error('Unable to connect to the database:', error);
   // }
 }
-export function closeDb() {
-  sequelize.close();
+export async function closeDb() {
+  await sequelize.close();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

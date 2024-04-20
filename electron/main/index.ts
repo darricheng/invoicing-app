@@ -98,9 +98,29 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('quit', () => {
-  closeDb();
-  closePuppets();
+// See: https://github.com/electron/electron/issues/9433#issuecomment-1870607944
+enum BeforeQuitActionStatus {
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
+}
+let beforeQuitActionStatus = BeforeQuitActionStatus.NOT_STARTED;
+app.on('before-quit', async (e) => {
+  switch (beforeQuitActionStatus) {
+    case BeforeQuitActionStatus.NOT_STARTED:
+      e.preventDefault();
+      beforeQuitActionStatus = BeforeQuitActionStatus.IN_PROGRESS;
+      await closeDb();
+      await closePuppets();
+      beforeQuitActionStatus = BeforeQuitActionStatus.COMPLETED;
+      app.quit();
+      break;
+    case BeforeQuitActionStatus.IN_PROGRESS:
+      e.preventDefault();
+      break;
+    case BeforeQuitActionStatus.COMPLETED:
+      break;
+  }
 });
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
