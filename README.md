@@ -13,7 +13,10 @@ As a solo entrepreneur, my time and monetary resources are limited. Creating inv
 
 ### Video Demo
 
-<!-- github will automatically make the video playable in the readme -->
+<!--
+    link is a video demo of the app sending an invoice automatically
+    github will automatically make the video playable in the readme
+-->
 
 https://github.com/darricheng/invoicing-app/assets/77005864/39878ea8-75ef-4cf6-bcbd-c513010184b1
 
