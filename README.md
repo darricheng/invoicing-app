@@ -32,3 +32,7 @@ https://github.com/darricheng/invoicing-app/assets/77005864/39878ea8-75ef-4cf6-b
 Cost was a primary factor in choosing the technologies to solve this problem. To send a PDF via WhatsApp in a cost-free manner, we would ideally do everything locally without the need to utilise any services provided by other companies. Thus I chose to use Electron for the UI and and SQLite to manage the data.
 
 The idea behind this app is to generate the PDF locally using [puppeteer](https://pptr.dev/), so that we have flexibility to change the invoice template easily with HTML and CSS, then send it again using puppeteer, this time with a library called [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js).
+
+## Development
+
+- `livedev` is a mode to use the app as a live app to send real messages while still in dev
