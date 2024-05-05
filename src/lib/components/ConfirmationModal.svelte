@@ -50,7 +50,7 @@
       <h2 class="text-lg font-bold">Accompanying Message</h2>
       <label class="flex items-center space-x-2">
         <input type="checkbox" class="checkbox" bind:checked={sendMessage} />
-        <p>Check to send input as message to all customers</p>
+        <p>Check to send input as message to the selected customers</p>
       </label>
       <!-- TODO: disable textarea if checkbox is unchecked -->
       <textarea
