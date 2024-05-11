@@ -1,5 +1,6 @@
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite';
 import { resolve } from 'path';
+import '@sveltejs/kit'; // having this fixes cannot find vite module in next line
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
