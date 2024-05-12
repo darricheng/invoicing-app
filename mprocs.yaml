@@ -1,0 +1,7 @@
+procs:
+  sveltekit:
+    shell: "pnpm run dev"
+    cwd: "./svelte-app/"
+  electron:
+    shell: "pnpm run dev"
+    cwd: "./electron-app/"
