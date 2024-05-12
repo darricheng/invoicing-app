@@ -7,7 +7,7 @@
   "homepage": "https://electron-vite.org",
   "type": "module",
   "scripts": {
-    "format": "prettier --plugin prettier-plugin-svelte --write .",
+    "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "svelte-check": "svelte-check --tsconfig ./tsconfig.json",
