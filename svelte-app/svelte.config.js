@@ -18,6 +18,9 @@ const config = {
     adapter: adapter({
       fallback: 'index.html',
     }),
+    alias: {
+      $sharedTypes: '../shared-types',
+    },
   },
 };
 export default config;
