@@ -8,7 +8,7 @@
     Modal,
     type ModalComponent,
   } from '@skeletonlabs/skeleton';
-  import '../app.pcss';
+  import '../app.postcss';
   import CustomerModal from '$lib/components/CustomerModal.svelte';
   import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
 
