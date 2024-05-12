@@ -1,22 +1,30 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron';
 
-// Custom APIs for renderer
-const api = {}
+// return keywords are necessary to return the data to the renderer
+// docs examples exclude the return keyword though
+contextBridge.exposeInMainWorld('dbAPI', {
+  listCustomers: () => {
+    return ipcRenderer.invoke('list-customers');
+  },
+  getCustomer: (id) => {
+    return ipcRenderer.invoke('get-customer', id);
+  },
+  addCustomer: (data) => {
+    return ipcRenderer.invoke('add-customer', data);
+  },
+  editCustomer: (data) => {
+    return ipcRenderer.invoke('edit-customer', data);
+  },
+  deleteCustomer: (id) => {
+    return ipcRenderer.invoke('delete-customer', id);
+  },
+  getEverything: () => {
+    return ipcRenderer.invoke('get-everything');
+  },
+});
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
-  // @ts-ignore (define in dts)
-  window.api = api
-}
+contextBridge.exposeInMainWorld('pdfAPI', {
+  sendInvoices: (data) => {
+    return ipcRenderer.invoke('send-invoices', data);
+  },
+});
