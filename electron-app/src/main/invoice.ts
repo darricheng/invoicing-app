@@ -16,10 +16,14 @@ export async function initWA() {
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
   waClient = new waweb.Client({
     authStrategy,
-    // NOTE: for some reason, I started needing to pin a version here
-    // otherwise the wweb lib will start throwing errors
-    // weird because this wasn't previously needed
-    webVersion: '2.2412.54',
+    // webVersion: '2.2412.54',
+    webVersionCache: {
+      // TODO: probably better to use a local cache, but had issues
+      type: 'remote',
+      remotePath:
+        'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
+      strict: true,
+    },
   });
 
   waClient.on('qr', (qr) => {
@@ -147,9 +151,13 @@ export async function sendInvoices(_e: IpcMainInvokeEvent, data: GenerateInvoice
     //   console.log('pretending to send ' + fileName + ' to ' + phone);
     // } else {
     const chatId = '65' + phone + '@c.us'; // WARN: this severely constrains how the phone numbers need to be stored
-    await waClient.sendMessage(chatId, new waweb.MessageMedia('application/pdf', data, fileName));
-    if (message.length > 0) {
-      await waClient.sendMessage(chatId, message);
+    try {
+      await waClient.sendMessage(chatId, new waweb.MessageMedia('application/pdf', data, fileName));
+      if (message.length > 0) {
+        await waClient.sendMessage(chatId, message);
+      }
+    } catch (e) {
+      console.error('failed to send message', e);
     }
     // }
   }
