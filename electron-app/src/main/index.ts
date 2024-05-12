@@ -18,7 +18,8 @@ import { sendInvoices, closePuppets, initWA } from './invoice';
 let mainWindow: BrowserWindow;
 
 function loadVite(): void {
-  mainWindow.loadURL(import.meta.MAIN_VITE_ELECTRON_RENDERER_URL).catch((e) => {
+  console.log('ENV VAR HERE:', import.meta.env.MAIN_VITE_ELECTRON_RENDERER_URL);
+  mainWindow.loadURL(import.meta.env.MAIN_VITE_ELECTRON_RENDERER_URL).catch((e) => {
     console.log('Error loading URL, retrying', e);
     setTimeout(() => {
       loadVite();
