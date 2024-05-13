@@ -2,7 +2,7 @@
   // Stores
   import { getModalStore } from '@skeletonlabs/skeleton';
   import { onMount, type SvelteComponent } from 'svelte';
-  import type { CustomerFormData } from '$lib/types';
+  import type { CustomerFormData } from '$sharedTypes/types';
 
   // Props
   /** Exposes parent props to this component. */

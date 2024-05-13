@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { InvoiceTableData } from '$lib/types';
+  import type { InvoiceTableData } from '$sharedTypes/types';
 
   export let data: InvoiceTableData;
 

@@ -1,4 +1,4 @@
-import { type GenerateInvoicesData } from '../../src/lib/types';
+import { type GenerateInvoicesData } from '../../../shared-types/types';
 
 export interface Customer {
   id: number;

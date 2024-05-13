@@ -1,5 +1,5 @@
 import { IpcMainInvokeEvent, app } from 'electron';
-import { GenerateInvoicesData } from '../../src/lib/types';
+import { GenerateInvoicesData } from '../../../shared-types/types';
 import puppeteer from 'puppeteer';
 import fs from 'node:fs/promises';
 import waweb from 'whatsapp-web.js';

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Customer, InvoiceTableData, LineItem } from '$lib/types';
+  import type { Customer, InvoiceTableData, LineItem } from '$sharedTypes/types';
   import { onMount } from 'svelte';
   import CustomerTable from './CustomerTable.svelte';
 

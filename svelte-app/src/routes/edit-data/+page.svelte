@@ -7,7 +7,7 @@
     getModalStore,
   } from '@skeletonlabs/skeleton';
   import { onMount } from 'svelte';
-  import type { CustomerFormData, Customer } from '$lib/types';
+  import type { CustomerFormData, Customer } from '$sharedTypes/types';
 
   // VARIABLES
   let tableData: Array<Customer> = [];
