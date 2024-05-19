@@ -9,6 +9,9 @@
     "strict": false,
     "allowJs": true,
     "checkJs": true,
+    "types": [
+      "vite/client"
+    ],
     "lib": [
       "ESNext",
       "DOM",

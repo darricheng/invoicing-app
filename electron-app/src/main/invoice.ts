@@ -10,7 +10,7 @@ import { is } from '@electron-toolkit/utils';
 
 let waClient: waweb.Client;
 
-export async function initWA() {
+export function initWA(): void {
   // force a login every time for dev so that we have to login again to send messages
   // TODO: set an appropriate path for the LocalAuth cache
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
@@ -28,7 +28,8 @@ export async function initWA() {
 
   waClient.on('qr', (qr) => {
     console.log('QR RECEIVED: ', qr);
-    QRCode.toString(qr, { type: 'terminal' }, (err, url) => {
+    // TODO: handle err properly
+    QRCode.toString(qr, { type: 'terminal' }, (_err, url) => {
       console.log(url);
     });
     QRCode.toFile(app.getAppPath() + '/qrcode.jpg', qr);
@@ -43,7 +44,10 @@ export async function initWA() {
   process.on('uncaughtException', closeWA);
 }
 
-export async function sendInvoices(_e: IpcMainInvokeEvent, data: GenerateInvoicesData) {
+export async function sendInvoices(
+  _e: IpcMainInvokeEvent,
+  data: GenerateInvoicesData
+): Promise<void> {
   const invoiceData = data.invoiceData;
   const message = data.message.trim();
 
@@ -167,10 +171,10 @@ function dollarFormatter(num: number): string {
   return new Intl.NumberFormat('en-sg', { style: 'currency', currency: 'sgd' }).format(num);
 }
 
-async function closeWA() {
+async function closeWA(): Promise<void> {
   await waClient.destroy();
 }
 
-export async function closePuppets() {
+export async function closePuppets(): Promise<void> {
   await closeWA();
 }
