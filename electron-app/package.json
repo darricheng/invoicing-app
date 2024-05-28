@@ -23,10 +23,10 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
-    "electron-updater": "^6.1.7",
     "dayjs": "^1.11.11",
+    "electron-updater": "^6.1.7",
     "handlebars": "^4.7.8",
-    "puppeteer": "^22.8.0",
+    "puppeteer": "^22.10.0",
     "qrcode": "^1.5.3",
     "sequelize": "^6.37.3",
     "sqlite3": "5.1.6",
