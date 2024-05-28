@@ -17,7 +17,7 @@ build-svelte:
     cd svelte-app && pnpm run build
 
 prep-svelte:
-    # redirects paths to be relative to current directory so that electron
+    # change paths to be relative to current directory so that electron
     # can find the files (as it uses the file:// protocol)
     # see: https://stackoverflow.com/a/54481688 
     sd -F '/_app' './_app' svelte-app/build/index.html
