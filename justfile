@@ -1,30 +1,39 @@
 default:
-    echo 'Hello, world!'
+    just --list --unsorted
+
 dev:
     mprocs
 
-build:
+build: full-svelte trash-dist
     cd electron-app && pnpm run build:mac
+
+test-build: full-svelte trash-dist && open
+    cd electron-app && pnpm run test-build 
+    cd electron-app/dist && unzip 'Invoicing App-1.0.0-arm64-mac.zip' 
+
+full-svelte: build-svelte prep-svelte move-svelte
 
 build-svelte:
     cd svelte-app && pnpm run build
-    trash electron-app/out/renderer
+
+prep-svelte:
+    sd -F '/_app' './_app' svelte-app/build/index.html
+
+move-svelte:
+    #!/usr/bin/env bash
+    set -euxo pipefail # https://just.systems/man/en/chapter_44.html#safer-bash-shebang-recipes
+    if [ -d "electron-app/out/renderer/" ]; then
+        trash electron-app/out/renderer/
+    fi
     mkdir -p electron-app/out/renderer
     cp -R svelte-app/build/* electron-app/out/renderer
 
-test-app:
+trash-dist:
     #!/usr/bin/env bash
-    cd electron-app 
-    if [ -d "dist/" ]; then
-        echo 'Trashing old dist folder...'
-        trash dist/ 
+    set -euxo pipefail # https://just.systems/man/en/chapter_44.html#safer-bash-shebang-recipes
+    if [ -d "electron-app/dist/" ]; then
+        trash electron-app/dist/ 
     fi
-    echo 'Creating build...'
-    pnpm run test-build 
-    cd dist 
-    echo 'Unzipping and opening app'
-    unzip 'Invoicing App-1.0.0-arm64-mac.zip' 
-    open Invoicing\ App.app/
 
 open:
     open electron-app/dist/Invoicing\ App.app
