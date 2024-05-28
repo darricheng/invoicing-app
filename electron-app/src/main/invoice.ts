@@ -68,7 +68,7 @@ export async function sendInvoices(
 
   const dates = {
     today: formattedToday,
-    due: today.add(14, 'day').format('DD/MM/YYYY'),
+    due: today.add(7, 'day').format('DD/MM/YYYY'),
   };
 
   // embed logo into html because in the context of puppeteer, it doesn't know how to get this path
