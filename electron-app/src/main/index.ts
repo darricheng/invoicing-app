@@ -18,9 +18,8 @@ import { sendInvoices, closePuppets, initWA } from './invoice';
 let mainWindow: BrowserWindow;
 
 function loadVite(): void {
-  console.log('ENV VAR HERE:', import.meta.env.MAIN_VITE_ELECTRON_RENDERER_URL);
   mainWindow.loadURL(import.meta.env.MAIN_VITE_ELECTRON_RENDERER_URL).catch((e) => {
-    console.log('Error loading URL, retrying', e);
+    console.error('Error loading URL, retrying', e);
     setTimeout(() => {
       loadVite();
     }, 200);
@@ -57,7 +56,6 @@ function createWindow(): void {
     mainWindow.webContents.openDevTools();
     // mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
   } else {
-    // TODO: probably have to change this when building for production
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 }
