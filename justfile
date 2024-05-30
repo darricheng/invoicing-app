@@ -1,10 +1,10 @@
 default:
     just --list --unsorted
 
-dev:
+dev: check-port
     mprocs --config mprocs.dev.yaml
 
-livedev: 
+livedev: check-port
     mprocs --config mprocs.livedev.yaml
 
 build: full-svelte trash-dist
@@ -43,4 +43,14 @@ trash-dist:
 
 open:
     open electron-app/dist/Invoicing\ App.app
+
+# exit if port 5173 is already in use 
+check-port:
+    #!/usr/bin/env bash
+    set -euxo pipefail # https://just.systems/man/en/chapter_44.html#safer-bash-shebang-recipes
+    # lsof returns nothing if the port is not in use, which is false so the script withon doesn't run
+    if lsof -Pi :5173 -sTCP:LISTEN -t >/dev/null ; then
+        echo "ERROR: Port 5173 is already in use"
+        exit 1
+    fi
 
