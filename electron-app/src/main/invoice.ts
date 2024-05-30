@@ -33,7 +33,6 @@ export function initWA(): void {
     QRCode.toString(qr, { type: 'terminal' }, (_err, url) => {
       console.log(url);
     });
-    QRCode.toFile(app.getAppPath() + '/qrcode.jpg', qr);
   });
   waClient.on('ready', () => {
     console.log('WHATSAPP CLIENT IS READY');

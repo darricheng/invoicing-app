@@ -6,7 +6,12 @@ export interface CustomerFormData {
     name: string;
     phone: string;
   };
-  line_items: Array<{ name: string; rate: number; id: number | null; details: string }>;
+  line_items: Array<{
+    name: string;
+    rate: number;
+    id: number | null;
+    details: string;
+  }>;
 }
 
 export interface Customer {
