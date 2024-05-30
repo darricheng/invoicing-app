@@ -7,6 +7,7 @@ import QRCode from 'qrcode';
 import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
 import { is } from '@electron-toolkit/utils';
+import { viteMode } from './utils';
 
 let waClient: waweb.Client;
 
@@ -150,20 +151,27 @@ export async function sendInvoices(
       encoding: 'base64',
     });
     const fileName = phonePathMap[phone].split('/').pop();
-    // if (is.dev) {
-    //   console.warn('DEV MODE');
-    //   console.log('pretending to send ' + fileName + ' to ' + phone);
-    // } else {
-    const chatId = '65' + phone + '@c.us'; // WARN: this severely constrains how the phone numbers need to be stored
-    try {
-      await waClient.sendMessage(chatId, new waweb.MessageMedia('application/pdf', data, fileName));
-      if (message.length > 0) {
-        await waClient.sendMessage(chatId, message);
+    if (viteMode === 'development') {
+      console.warn('DEV MODE');
+      console.log('pretending to send ' + fileName + ' to ' + phone);
+    } else {
+      // Vite mode is livedev or prod
+
+      // WARN: this severely constrains how the phone numbers need to be stored
+      const chatId = '65' + phone + '@c.us';
+
+      try {
+        await waClient.sendMessage(
+          chatId,
+          new waweb.MessageMedia('application/pdf', data, fileName)
+        );
+        if (message.length > 0) {
+          await waClient.sendMessage(chatId, message);
+        }
+      } catch (e) {
+        console.error('failed to send message', e);
       }
-    } catch (e) {
-      console.error('failed to send message', e);
     }
-    // }
   }
 }
 

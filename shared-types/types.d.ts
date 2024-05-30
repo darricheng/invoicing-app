@@ -1,3 +1,5 @@
+export type ViteMode = "development" | "livedev" | "production";
+
 export interface CustomerFormData {
   customer: {
     id: number | null;
