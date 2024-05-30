@@ -1,0 +1,9 @@
+procs:
+  sveltekit:
+    shell: "pnpm run dev"
+    cwd: "./svelte-app/"
+    stop: "SIGINT"
+  electron:
+    shell: "pnpm run livedev"
+    cwd: "./electron-app/"
+    stop: "SIGTERM"

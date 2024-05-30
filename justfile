@@ -2,7 +2,10 @@ default:
     just --list --unsorted
 
 dev:
-    mprocs
+    mprocs --config mprocs.dev.yaml
+
+livedev: 
+    mprocs --config mprocs.livedev.yaml
 
 build: full-svelte trash-dist
     cd electron-app && pnpm run build:mac
