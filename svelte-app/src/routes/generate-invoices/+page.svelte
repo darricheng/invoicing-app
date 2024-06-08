@@ -1,10 +1,37 @@
 <script lang="ts">
   import { writable, type Writable } from 'svelte/store';
+  import { beforeNavigate, goto } from '$app/navigation';
   import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 
   import type { Customer, InvoiceTableData, LineItem } from '$sharedTypes/types';
   import { onMount } from 'svelte';
   import CustomerTable from './CustomerTable.svelte';
+
+  // NOTE: Hacky way to confirm if user wants to navigate as beforeNavigate is not async,
+  // but it achieves the desired functionality
+  // See: https://github.com/sveltejs/kit/issues/4421
+  let userLeavingPage = false;
+  beforeNavigate(async ({ cancel, to, from }) => {
+    // 1. userLeavingPage prevents beforeNavigate from running in an infinite loop because
+    //    if user clicks confirm, goto will trigger beforeNavigate again
+    // 2. The second condition stops the popup showing if user clicks on the current tab's link
+    if (userLeavingPage || (to && from && to.route.id === from.route.id)) return;
+    cancel();
+    const confirmNavigatePromise: Promise<boolean> = new Promise((resolve) => {
+      const confirmNavigateModal: ModalSettings = {
+        type: 'confirm',
+        title: 'Confirm Leaving',
+        body: 'Leaving will reset any data you have modified from the default. Are you sure you want to leave?',
+        response: (r: boolean) => resolve(r),
+      };
+      modalStore.trigger(confirmNavigateModal);
+    });
+    const willNavigate = await confirmNavigatePromise;
+    if (willNavigate && to) {
+      userLeavingPage = true;
+      goto(to?.url);
+    }
+  });
 
   const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
   const modalStore = getModalStore();
