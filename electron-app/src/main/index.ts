@@ -14,6 +14,7 @@ import {
   testDb,
 } from './db';
 import { sendInvoices, closePuppets, initWA } from './invoice';
+import { initAppData } from './appData';
 
 let mainWindow: BrowserWindow;
 
@@ -79,6 +80,7 @@ app.whenReady().then(() => {
     : app.getPath('appData') + '/invoicing-app-data';
   initDb(dbPath);
   testDb();
+  initAppData();
 
   // IPC handlers
   ipcMain.handle('list-customers', listCustomers);
