@@ -7,7 +7,7 @@
   import { onMount } from 'svelte';
   import CustomerTable from './CustomerTable.svelte';
 
-  // NOTE: Hacky way to confirm if user wants to navigate as beforeNavigate is not async,
+  // Hacky way to confirm if user wants to navigate as beforeNavigate is not async,
   // but it achieves the desired functionality
   // See: https://github.com/sveltejs/kit/issues/4421
   let userLeavingPage = false;
@@ -36,6 +36,14 @@
   const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
   const modalStore = getModalStore();
 
+  interface GenerateInvoicesModalResponse {
+    confirm: boolean;
+    message?: string;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function isConfirmationModalData(obj: any): obj is GenerateInvoicesModalResponse {
+    return typeof obj === 'object' && obj !== null && 'confirm' in obj;
+  }
   async function generateInvoices() {
     const toSend = $generateInvoicesData.filter((el) => el.selected);
     new Promise((resolve) => {
@@ -46,16 +54,21 @@
         type: 'component',
         component: 'confirmationModal',
         title: 'Confirmation',
-        response: (res) => resolve(res),
+        response: (res: GenerateInvoicesModalResponse | undefined) =>
+          resolve(res as GenerateInvoicesModalResponse),
         meta: {
           customers: customerNames,
         },
       };
       modalStore.trigger(confirmationModal);
-    }).then(async (response: { confirm: boolean; message?: string } | undefined) => {
-      // NOTE: confirmSend is undefined if model was closed by clicking outside
-      console.log(response);
-      if (!response || !response.confirm) return;
+    }).then(async (response) => {
+      // confirmSend is undefined if model was closed by clicking outside
+      if (!response) return;
+
+      // type guard just to satisfy TS
+      if (!isConfirmationModalData(response)) return;
+
+      if (!response.confirm) return;
 
       // TODO: inform user about all errors instead of failing at the first error
       for (const customer of toSend) {
@@ -107,6 +120,9 @@
               this.amount = val * this.rate;
             },
             get rate() {
+              // NOTE: ignore if an error appears for the below line suggesting to change _rate to rate
+              // the lsp doesnt suggest a similar change for get quantity() above
+              // changing to rate breaks the app
               return this._rate;
             },
             set rate(val) {
