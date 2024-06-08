@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { writable, type Writable } from 'svelte/store';
+  import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+
   import type { Customer, InvoiceTableData, LineItem } from '$sharedTypes/types';
   import { onMount } from 'svelte';
   import CustomerTable from './CustomerTable.svelte';
-
-  import { writable, type Writable } from 'svelte/store';
-  import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
 
   const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
   const modalStore = getModalStore();
