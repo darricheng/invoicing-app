@@ -7,7 +7,7 @@ import fs from 'fs';
 import { app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
-const basePath = is.dev ? './mock-userData' : app.getPath('userData');
+const basePath = is.dev ? `${app.getAppPath()}/mock-userData` : app.getPath('userData');
 const appDataPath = basePath + '/appData';
 
 export function initAppData(): void {
