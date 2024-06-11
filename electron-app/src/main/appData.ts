@@ -15,3 +15,5 @@ export function initAppData(): void {
     fs.mkdirSync(appDataPath);
   }
 }
+
+export const puppeteerPath = `${appDataPath}/Chromium.app/Contents/MacOS/Chromium`;

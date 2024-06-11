@@ -8,6 +8,7 @@ import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
 import { is } from '@electron-toolkit/utils';
 import { viteMode } from './utils';
+import { puppeteerPath } from './appData';
 
 let waClient: waweb.Client;
 
@@ -24,6 +25,9 @@ export function initWA(): void {
       remotePath:
         'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
       strict: true,
+    },
+    puppeteer: {
+      executablePath: puppeteerPath,
     },
   });
 
