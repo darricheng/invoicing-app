@@ -23,7 +23,12 @@ export function initAppData(): void {
   }
 }
 
-export async function downloadPuppeteer(): Promise<void> {
+export function downloadPuppeteer(): void {
+  if (fs.existsSync(chromiumPath)) {
+    console.log('Chromium already exists');
+    return;
+  }
+
   const zippedChromiumFile = fs.createWriteStream(zippedChromiumPath);
   console.log('Downloading chromium...');
   const request = https
