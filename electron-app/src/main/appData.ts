@@ -5,6 +5,8 @@
 
 import fs from 'fs';
 import https from 'https';
+import { exec } from 'child_process';
+
 import { app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
@@ -30,14 +32,20 @@ export function downloadPuppeteer(): void {
   }
 
   const zippedChromiumFile = fs.createWriteStream(zippedChromiumPath);
-  console.log('Downloading chromium...');
   const request = https
     .get(chromiumMacArmUrl, (response) => {
-      console.log('Piping response...');
       response.pipe(zippedChromiumFile);
+
       zippedChromiumFile.on('finish', () => {
         zippedChromiumFile.close();
-        console.log('Downloaded chromium via NodeJS!');
+
+        const childProcess = exec(
+          `unzip ${zippedChromiumPath} -d ${appDataPath}`,
+          (err, stdout, stderr) => {
+            console.log('something');
+            console.log(err, stdout, stderr);
+          }
+        );
       });
     })
     .on('error', (err) => {
