@@ -14,7 +14,7 @@ import {
   testDb,
 } from './db';
 import { sendInvoices, closePuppets, initWA } from './invoice';
-import { initAppData } from './appData';
+import { downloadPuppeteer, initAppData } from './appData';
 
 let mainWindow: BrowserWindow;
 
@@ -81,6 +81,8 @@ app.whenReady().then(() => {
   initDb(dbPath);
   testDb();
   initAppData();
+
+  downloadPuppeteer();
 
   // IPC handlers
   ipcMain.handle('list-customers', listCustomers);
