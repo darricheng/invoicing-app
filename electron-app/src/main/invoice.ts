@@ -8,7 +8,7 @@ import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
 import { is } from '@electron-toolkit/utils';
 import { viteMode } from './utils';
-import { puppeteerPath } from './appData';
+import { chromiumPath } from './appData';
 
 let waClient: waweb.Client;
 
@@ -27,7 +27,7 @@ export function initWA(): void {
       strict: true,
     },
     puppeteer: {
-      executablePath: puppeteerPath,
+      executablePath: chromiumPath,
     },
   });
 

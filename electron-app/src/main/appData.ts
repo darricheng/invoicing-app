@@ -15,7 +15,7 @@ const chromiumMacArmUrl =
   'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F1045634%2Fchrome-mac.zip?generation=1662945273234999&alt=media';
 const zippedChromiumPath = `${appDataPath}/zipped-chromium`;
 
-export const puppeteerPath = `${appDataPath}/chrome-mac/Chromium.app/Contents/MacOS/Chromium`;
+export const chromiumPath = `${appDataPath}/chrome-mac/Chromium.app/Contents/MacOS/Chromium`;
 
 export function initAppData(): void {
   if (!fs.existsSync(appDataPath)) {
