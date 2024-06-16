@@ -11,10 +11,12 @@ import dayjs from 'dayjs';
 import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
 import { chromiumPath } from './appData';
+import appEventEmitter, { AppEvents } from './events';
 
 let waClient: waweb.Client;
 
-export function initWA(): void {
+function setupClient(): void {
+  console.log('SETTING UP WA CLIENT');
   // force a login every time for dev so that we have to login again to send messages
   // TODO: set an appropriate path for the LocalAuth cache
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
@@ -48,6 +50,13 @@ export function initWA(): void {
   process.on('exit', closeWA);
   process.on('SIGTERM', closeWA);
   process.on('uncaughtException', closeWA);
+}
+
+export function initWA(): void {
+  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, setupClient);
+  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => {
+    console.log('received CHROMIUM_DOWNLOAD_COMPLETE event');
+  });
 }
 
 export async function sendInvoices(

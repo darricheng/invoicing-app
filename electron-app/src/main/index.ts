@@ -77,12 +77,16 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
+  initAppData();
+
   const dbPath = is.dev
     ? app.getAppPath() + '/dev.sqlite'
     : app.getPath('appData') + '/invoicing-app-data';
   initDb(dbPath);
   testDb();
-  initAppData();
+
+  // Set up WhatsApp Client
+  initWA();
 
   downloadPuppeteer();
 
@@ -94,9 +98,6 @@ app.whenReady().then(() => {
   ipcMain.handle('delete-customer', deleteCustomer);
   ipcMain.handle('get-everything', getEverything);
   ipcMain.handle('send-invoices', sendInvoices);
-
-  // Set up WhatsApp Client
-  initWA();
 
   createWindow();
 

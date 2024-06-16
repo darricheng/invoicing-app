@@ -10,6 +10,8 @@ import { exec } from 'child_process';
 import { app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
+import appEventEmitter, { AppEvents } from './events';
+
 const basePath = is.dev ? `${app.getAppPath()}/mock-userData` : app.getPath('userData');
 const appDataPath = basePath + '/appData';
 
@@ -28,6 +30,7 @@ export function initAppData(): void {
 export function downloadPuppeteer(): void {
   if (fs.existsSync(chromiumPath)) {
     console.log('Chromium already exists');
+    appEventEmitter.emit(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE);
     return;
   }
 
@@ -44,6 +47,7 @@ export function downloadPuppeteer(): void {
           (err, stdout, stderr) => {
             console.log('something');
             console.log(err, stdout, stderr);
+            appEventEmitter.emit(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE);
           }
         );
       });
