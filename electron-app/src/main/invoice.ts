@@ -1,12 +1,14 @@
-import { IpcMainInvokeEvent, app } from 'electron';
-import { GenerateInvoicesData } from '../../../shared-types/types';
-import puppeteer from 'puppeteer';
 import fs from 'node:fs/promises';
+
+import { IpcMainInvokeEvent, app } from 'electron';
+import { is } from '@electron-toolkit/utils';
+import puppeteer from 'puppeteer';
 import waweb from 'whatsapp-web.js';
 import QRCode from 'qrcode';
 import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
-import { is } from '@electron-toolkit/utils';
+
+import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
 import { chromiumPath } from './appData';
 
