@@ -10,7 +10,7 @@
   } from '@skeletonlabs/skeleton';
   import '../app.postcss';
   import CustomerModal from '$lib/components/CustomerModal.svelte';
-  import ConfirmationModal from '$lib/components/ConfirmationModal.svelte';
+  import SendInvoicesConfirmationModal from '$lib/components/SendInvoicesConfirmationModal.svelte';
 
   initializeStores();
 
@@ -20,7 +20,7 @@
       // Provide a template literal for the default component slot
       slot: '<p>Placeholder</p>',
     },
-    confirmationModal: { ref: ConfirmationModal },
+    sendInvoicesConfirmationModal: { ref: SendInvoicesConfirmationModal },
   };
 </script>
 

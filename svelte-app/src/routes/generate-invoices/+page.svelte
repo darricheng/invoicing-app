@@ -53,9 +53,9 @@
       const customerNames = toSend.map((el) => {
         return el.customer.name;
       });
-      const confirmationModal: ModalSettings = {
+      const sendInvoicesConfirmationModal: ModalSettings = {
         type: 'component',
-        component: 'confirmationModal',
+        component: 'sendInvoicesConfirmationModal',
         title: 'Confirmation',
         response: (res: GenerateInvoicesModalResponse | undefined) =>
           resolve(res as GenerateInvoicesModalResponse),
@@ -63,7 +63,7 @@
           customers: customerNames,
         },
       };
-      modalStore.trigger(confirmationModal);
+      modalStore.trigger(sendInvoicesConfirmationModal);
     }).then(async (response) => {
       // confirmSend is undefined if model was closed by clicking outside
       if (!response) return;
