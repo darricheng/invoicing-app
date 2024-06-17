@@ -101,7 +101,19 @@
       if (!response.confirm) return;
 
       console.log(toSend);
-      await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });
+      toastStore.trigger({ message: 'Sending invoices...' });
+      try {
+        await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });
+        toastStore.trigger({
+          message: 'Successfully sent invoices!',
+          background: 'variant-filled-success',
+        });
+      } catch (e) {
+        toastStore.trigger({
+          message: 'An error occurred, please check your WhatsApp separately for any issues.',
+          background: 'variant-filled-error',
+        });
+      }
     });
   }
   function selectAll() {
