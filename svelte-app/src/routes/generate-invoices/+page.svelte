@@ -51,6 +51,15 @@
   async function generateInvoices() {
     const toSend = $generateInvoicesData.filter((el) => el.selected);
 
+    if (toSend.length === 0) {
+      toastStore.trigger({
+        message: 'No selected invoices to send',
+        background: 'variant-filled-error',
+      });
+      return;
+    }
+
+    // Check for any rate or quantity 0
     // TODO: inform user about all errors instead of failing at the first error
     for (const customer of toSend) {
       for (const { name, rate, quantity } of customer.line_items) {
