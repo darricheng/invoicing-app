@@ -6,6 +6,7 @@
     TabAnchor,
     initializeStores,
     Modal,
+    Toast,
     type ModalComponent,
   } from '@skeletonlabs/skeleton';
   import '../app.postcss';
@@ -25,6 +26,7 @@
 </script>
 
 <Modal components={modalRegistry} />
+<Toast />
 <AppShell>
   <svelte:fragment slot="header">
     <AppBar>

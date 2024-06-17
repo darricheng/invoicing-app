@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable, type Writable } from 'svelte/store';
   import { beforeNavigate, goto } from '$app/navigation';
-  import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+  import { getModalStore, type ModalSettings, getToastStore } from '@skeletonlabs/skeleton';
 
   import type { Customer, InvoiceTableData, LineItem } from '$sharedTypes/types';
   import { onMount } from 'svelte';
@@ -38,6 +38,7 @@
 
   const generateInvoicesData: Writable<Array<InvoiceTableData>> = writable([]);
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   interface GenerateInvoicesModalResponse {
     confirm: boolean;
@@ -49,6 +50,23 @@
   }
   async function generateInvoices() {
     const toSend = $generateInvoicesData.filter((el) => el.selected);
+
+    // TODO: inform user about all errors instead of failing at the first error
+    for (const customer of toSend) {
+      for (const { name, rate, quantity } of customer.line_items) {
+        // name is not empty string or 0, rate and quantity aren't 0
+        if (!name || rate === 0 || quantity === 0) {
+          toastStore.trigger({
+            message: 'There exists a line item with 0 rate or quantity',
+            background: 'variant-filled-error',
+          });
+          console.error('found invalid data for generating invoices');
+          console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
+          return;
+        }
+      }
+    }
+
     new Promise((resolve) => {
       const customerNames = toSend.map((el) => {
         return el.customer.name;
@@ -73,17 +91,6 @@
 
       if (!response.confirm) return;
 
-      // TODO: inform user about all errors instead of failing at the first error
-      for (const customer of toSend) {
-        for (const { name, rate, quantity } of customer.line_items) {
-          // name is not empty string or 0, rate and quantity aren't 0
-          if (!name || rate === 0 || quantity === 0) {
-            console.error('found invalid data for generating invoices');
-            console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
-            return;
-          }
-        }
-      }
       console.log(toSend);
       await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });
     });
