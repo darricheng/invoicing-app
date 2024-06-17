@@ -11,11 +11,14 @@
   // but it achieves the desired functionality
   // See: https://github.com/sveltejs/kit/issues/4421
   let userLeavingPage = false;
-  beforeNavigate(async ({ cancel, to, from }) => {
-    // 1. userLeavingPage prevents beforeNavigate from running in an infinite loop because
+  beforeNavigate(async ({ cancel, to, from, type }) => {
+    // 1. type 'leave' means user is quitting the app, so we let them quit
+    // 2. userLeavingPage prevents beforeNavigate from running in an infinite loop because
     //    if user clicks confirm, goto will trigger beforeNavigate again
-    // 2. The second condition stops the popup showing if user clicks on the current tab's link
-    if (userLeavingPage || (to && from && to.route.id === from.route.id)) return;
+    // 3. The second condition stops the popup showing if user clicks on the current tab's link
+    if (type === 'leave' || userLeavingPage || (to && from && to.route.id === from.route.id)) {
+      return;
+    }
     cancel();
     const confirmNavigatePromise: Promise<boolean> = new Promise((resolve) => {
       const confirmNavigateModal: ModalSettings = {
