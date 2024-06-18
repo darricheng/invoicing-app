@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 
 import { IpcMainInvokeEvent, app } from 'electron';
 import { is } from '@electron-toolkit/utils';
@@ -15,6 +16,8 @@ import appEventEmitter, { AppEvents } from './events';
 
 let waClient: waweb.Client;
 
+const localWwebPageCachePath = path.join(__dirname, '../../resources/wwebjs/');
+
 function setupClient(): void {
   console.log('SETTING UP WA CLIENT');
   // force a login every time for dev so that we have to login again to send messages
@@ -22,12 +25,10 @@ function setupClient(): void {
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
   waClient = new waweb.Client({
     authStrategy,
-    // webVersion: '2.2412.54',
+    webVersion: '2.2412.54',
     webVersionCache: {
-      // TODO: probably better to use a local cache, but had issues
-      type: 'remote',
-      remotePath:
-        'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
+      type: 'local',
+      path: localWwebPageCachePath,
       strict: true,
     },
     puppeteer: {
