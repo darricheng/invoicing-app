@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises';
+import fs from 'fs';
 
 import { IpcMainInvokeEvent, app } from 'electron';
 import { is } from '@electron-toolkit/utils';
@@ -73,9 +73,12 @@ export async function sendInvoices(
     return new Handlebars.SafeString(text);
   });
 
-  const templateSource = await fs.readFile(app.getAppPath() + '/default-invoice-template.hbs', {
-    encoding: 'utf8',
-  });
+  const templateSource = await fs.promises.readFile(
+    app.getAppPath() + '/default-invoice-template.hbs',
+    {
+      encoding: 'utf8',
+    }
+  );
   const template = Handlebars.compile(templateSource);
 
   const today = dayjs();
@@ -89,7 +92,7 @@ export async function sendInvoices(
   // embed logo into html because in the context of puppeteer, it doesn't know how to get this path
   // we are providing puppeteer with html, not asking it to load a page from a directory
   // where it can resolve these paths
-  const logo = await fs.readFile(app.getAppPath() + '/logo.png', { encoding: 'base64' });
+  const logo = await fs.promises.readFile(app.getAppPath() + '/logo.png', { encoding: 'base64' });
   const logoSrc = 'data:image/png;base64,' + logo;
 
   const company = {
@@ -161,7 +164,7 @@ export async function sendInvoices(
   await browser.close();
 
   for (const phone in phonePathMap) {
-    const data = await fs.readFile(phonePathMap[phone], {
+    const data = await fs.promises.readFile(phonePathMap[phone], {
       encoding: 'base64',
     });
     const fileName = phonePathMap[phone].split('/').pop();
