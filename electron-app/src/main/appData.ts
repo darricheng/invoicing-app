@@ -35,21 +35,19 @@ export function downloadPuppeteer(): void {
   }
 
   const zippedChromiumFile = fs.createWriteStream(zippedChromiumPath);
-  const request = https
+
+  https
     .get(chromiumMacArmUrl, (response) => {
       response.pipe(zippedChromiumFile);
 
       zippedChromiumFile.on('finish', () => {
         zippedChromiumFile.close();
 
-        const childProcess = exec(
-          `unzip ${zippedChromiumPath} -d ${appDataPath}`,
-          (err, stdout, stderr) => {
-            console.log('something');
-            console.log(err, stdout, stderr);
-            appEventEmitter.emit(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE);
-          }
-        );
+        exec(`unzip ${zippedChromiumPath} -d ${appDataPath}`, () => {
+          appEventEmitter.emit(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE);
+        });
+        // NOTE: Might have to remove the com.apple.quarantine attribute
+        // using `xattr -d com.apple.quarantine path/to/Chromium` for MacOS
       });
     })
     .on('error', (err) => {
