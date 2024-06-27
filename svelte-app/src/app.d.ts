@@ -6,7 +6,7 @@ import {
   type GetEverything,
   type ListCustomers,
   type SendInvoices,
-} from '../electron/main/types.ts';
+} from '../../electron-app/src/main/types';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
