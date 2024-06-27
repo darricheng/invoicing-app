@@ -11,15 +11,15 @@ import dayjs from 'dayjs';
 
 import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
-import { chromiumPath } from './appData';
+import { chromiumPath, downloadPuppeteer } from './appData';
 import appEventEmitter, { AppEvents } from './events';
+import { BrowserWindow } from 'electron/main';
 
 let waClient: waweb.Client;
 
 const localWwebPageCachePath = path.join(__dirname, '../../resources/wwebjs/');
 
-function setupClient(): void {
-  console.log('SETTING UP WA CLIENT');
+function setupClient(mainWindow: BrowserWindow): void {
   // force a login every time for dev so that we have to login again to send messages
   // TODO: set an appropriate path for the LocalAuth cache
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
@@ -38,6 +38,7 @@ function setupClient(): void {
 
   waClient.on('qr', (qr) => {
     console.log('QR RECEIVED: ', qr);
+    mainWindow.webContents.send('whatsapp-qr', qr);
     // TODO: handle err properly
     QRCode.toString(qr, { type: 'terminal' }, (_err, url) => {
       console.log(url);
@@ -45,6 +46,7 @@ function setupClient(): void {
   });
   waClient.on('ready', () => {
     console.log('WHATSAPP CLIENT IS READY');
+    mainWindow.webContents.send('whatsapp-ready');
   });
   waClient.initialize();
 
@@ -53,8 +55,8 @@ function setupClient(): void {
   process.on('uncaughtException', closeWA);
 }
 
-export function initWA(): void {
-  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, setupClient);
+export function initWA(mainWindow: BrowserWindow): void {
+  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => setupClient(mainWindow));
   appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => {
     console.log('received CHROMIUM_DOWNLOAD_COMPLETE event');
   });

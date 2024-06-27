@@ -38,10 +38,17 @@ export interface FullCustomerForm {
   line_items: Array<LineItemForm>;
 }
 
+// dbApi
 export type ListCustomers = () => Promise<Array<Customer>>;
 export type GetCustomer = (id: number) => Promise<[Customer, Array<LineItem>]>;
 export type AddCustomer = (data: FullCustomerForm) => Promise<[number, number]>; // [customer_id, number_of_line_items]
 export type EditCustomer = (data: FullCustomerForm) => Promise<[number, number]>; // [customer_rows_updated, line_item_rows_updated]
 export type DeleteCustomer = (id: number) => Promise<number>; // should just return 1 on successful delete
 export type GetEverything = () => Promise<Array<FullCustomerWithLineItems>>;
+
+// pdfApi
 export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;
+
+// whatsappApi
+export type OnReceiveWhatsappQr = (callback: (data: string) => void) => void;
+export type OnWhatsappReady = (callback: () => void) => void;

@@ -1,6 +1,6 @@
 import { join } from 'path';
 
-import { app, shell, BrowserWindow, ipcMain } from 'electron';
+import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron';
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 
 import icon from '../../resources/icon.png?asset';
@@ -43,6 +43,27 @@ function createWindow(): void {
     },
   });
 
+  // Set up WhatsApp Client
+  // TODO: need better ordering
+  // probably makes sense for downloadPuppeteer to be in initWA,
+  // but need to debug the flow
+  initWA(mainWindow);
+  downloadPuppeteer();
+
+  // NOTE: for testing QR callbacks
+  const menu = Menu.buildFromTemplate([
+    {
+      label: app.name,
+      submenu: [
+        {
+          click: () => mainWindow.webContents.send('whatsapp-qr', 'some qr string'),
+          label: 'Test QR handler',
+        },
+      ],
+    },
+  ]);
+  Menu.setApplicationMenu(menu);
+
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
   });
@@ -84,11 +105,6 @@ app.whenReady().then(() => {
     : app.getPath('appData') + '/invoicing-app-data';
   initDb(dbPath);
   testDb();
-
-  // Set up WhatsApp Client
-  initWA();
-
-  downloadPuppeteer();
 
   // IPC handlers
   ipcMain.handle('list-customers', listCustomers);

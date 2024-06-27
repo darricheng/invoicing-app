@@ -28,3 +28,15 @@ contextBridge.exposeInMainWorld('pdfAPI', {
     return ipcRenderer.invoke('send-invoices', data);
   },
 });
+
+contextBridge.exposeInMainWorld('whatsappApi', {
+  onReceiveWhatsappQr: (callback) => {
+    return ipcRenderer.on('whatsapp-qr', (_event, data) => {
+      console.log(data);
+      callback(data);
+    });
+  },
+  onWhatsappReady: (callback) => {
+    return ipcRenderer.on('whatsapp-ready', (_event, data) => callback(data));
+  },
+});

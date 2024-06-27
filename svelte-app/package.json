@@ -26,6 +26,7 @@
     "@tailwindcss/typography": "0.5.13",
     "@types/eslint": "^8.56.0",
     "@types/node": "20.12.11",
+    "@types/qrcode": "^1.5.5",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "autoprefixer": "10.4.19",
@@ -46,6 +47,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@floating-ui/dom": "1.6.5"
+    "@floating-ui/dom": "1.6.5",
+    "qrcode": "^1.5.3"
   }
 }

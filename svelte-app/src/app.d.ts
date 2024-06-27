@@ -5,6 +5,7 @@ import {
   type GetCustomer,
   type GetEverything,
   type ListCustomers,
+  type OnWhatsappReady,
   type SendInvoices,
 } from '../../electron-app/src/main/types';
 
@@ -33,9 +34,15 @@ export interface IPdfAPI {
   sendInvoices: SendInvoices;
 }
 
+export interface IWhatsappApi {
+  onReceiveWhatsappQr: OnReceiveWhatsappQr;
+  onWhatsappReady: OnWhatsappReady;
+}
+
 declare global {
   interface Window {
     dbAPI: IDbAPI;
     pdfAPI: IPdfAPI;
+    whatsappApi: IWhatsappApi;
   }
 }

@@ -8,10 +8,15 @@
     Modal,
     Toast,
     type ModalComponent,
+    getToastStore,
+    getModalStore,
+    type ModalSettings,
   } from '@skeletonlabs/skeleton';
+  import QRCode from 'qrcode';
   import '../app.postcss';
   import CustomerModal from '$lib/components/CustomerModal.svelte';
   import SendInvoicesConfirmationModal from '$lib/components/SendInvoicesConfirmationModal.svelte';
+  import ImageModal from '$lib/components/ImageModal.svelte';
 
   initializeStores();
 
@@ -22,7 +27,35 @@
       slot: '<p>Placeholder</p>',
     },
     sendInvoicesConfirmationModal: { ref: SendInvoicesConfirmationModal },
+    imageModal: { ref: ImageModal },
   };
+
+  const toastStore = getToastStore();
+  const modalStore = getModalStore();
+
+  window.whatsappApi.onReceiveWhatsappQr(async (qr: string) => {
+    const qrSvg = await QRCode.toString(qr, { type: 'svg' });
+    console.log(qrSvg);
+    const imageModal: ModalSettings = {
+      type: 'component',
+      component: 'imageModal',
+      image: qrSvg,
+    };
+
+    toastStore.clear();
+    toastStore.trigger({
+      message: 'Login to WhatsApp',
+      background: 'variant-filled-primary',
+      autohide: false,
+      action: {
+        label: 'Show QR',
+        response: () => {
+          modalStore.trigger(imageModal);
+          toastStore.clear();
+        },
+      },
+    });
+  });
 </script>
 
 <Modal components={modalRegistry} />
