@@ -25,7 +25,7 @@ function setupClient(mainWindow: BrowserWindow): void {
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
   waClient = new waweb.Client({
     authStrategy,
-    webVersion: '2.2412.54',
+    webVersion: '2.2413.51-beta',
     webVersionCache: {
       type: 'local',
       path: localWwebPageCachePath,
