@@ -32,7 +32,6 @@ contextBridge.exposeInMainWorld('pdfAPI', {
 contextBridge.exposeInMainWorld('whatsappApi', {
   onReceiveWhatsappQr: (callback) => {
     return ipcRenderer.on('whatsapp-qr', (_event, data) => {
-      console.log(data);
       callback(data);
     });
   },

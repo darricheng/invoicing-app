@@ -100,7 +100,6 @@
 
       if (!response.confirm) return;
 
-      console.log(toSend);
       toastStore.trigger({ message: 'Sending invoices...' });
       try {
         await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });

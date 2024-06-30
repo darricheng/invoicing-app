@@ -15,7 +15,6 @@
 
   function handleConfirm(): void {
     if ($modalStore[0].response) {
-      console.log('sendMessage', sendMessage);
       const responseMsg = sendMessage ? message : '';
       $modalStore[0].response({ confirm: true, message: responseMsg });
     }

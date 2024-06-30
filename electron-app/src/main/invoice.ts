@@ -5,7 +5,6 @@ import { IpcMainInvokeEvent, app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 import puppeteer from 'puppeteer';
 import waweb from 'whatsapp-web.js';
-import QRCode from 'qrcode';
 import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
 
@@ -37,15 +36,9 @@ function setupClient(mainWindow: BrowserWindow): void {
   });
 
   waClient.on('qr', (qr) => {
-    console.log('QR RECEIVED: ', qr);
     mainWindow.webContents.send('whatsapp-qr', qr);
-    // TODO: handle err properly
-    QRCode.toString(qr, { type: 'terminal' }, (_err, url) => {
-      console.log(url);
-    });
   });
   waClient.on('ready', () => {
-    console.log('WHATSAPP CLIENT IS READY');
     mainWindow.webContents.send('whatsapp-ready');
   });
   waClient.initialize();
