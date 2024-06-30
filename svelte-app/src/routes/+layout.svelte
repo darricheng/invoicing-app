@@ -34,8 +34,10 @@
   const modalStore = getModalStore();
 
   window.whatsappApi.onReceiveWhatsappQr(async (qr: string) => {
+    // don't trigger toast if modal is already open
+    if ($modalStore[0]) return;
+
     const qrSvg = await QRCode.toString(qr, { type: 'svg' });
-    console.log(qrSvg);
     const imageModal: ModalSettings = {
       type: 'component',
       component: 'imageModal',
@@ -54,6 +56,13 @@
           toastStore.clear();
         },
       },
+    });
+  });
+  window.whatsappApi.onWhatsappReady(() => {
+    modalStore.close();
+    toastStore.trigger({
+      message: 'WhatsApp is ready',
+      background: 'variant-filled-primary',
     });
   });
 </script>
