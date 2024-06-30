@@ -91,6 +91,9 @@
           <TabAnchor href="/edit-data">
             <svelte:fragment>Edit Data</svelte:fragment>
           </TabAnchor>
+          <TabAnchor href="/settings">
+            <svelte:fragment>Settings</svelte:fragment>
+          </TabAnchor>
         </TabGroup>
       </svelte:fragment>
       <svelte:fragment slot="trail"></svelte:fragment>
