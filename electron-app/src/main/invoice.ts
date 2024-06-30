@@ -1,7 +1,6 @@
 import fs from 'fs';
-import path from 'path';
 
-import { IpcMainInvokeEvent, app } from 'electron';
+import { IpcMainInvokeEvent, app, BrowserWindow } from 'electron';
 import { is } from '@electron-toolkit/utils';
 import puppeteer from 'puppeteer';
 import waweb from 'whatsapp-web.js';
@@ -10,13 +9,18 @@ import dayjs from 'dayjs';
 
 import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
-import { chromiumExists, chromiumPath, downloadChromium } from './appData';
+import {
+  chromiumExists,
+  chromiumPath,
+  downloadChromium,
+  downloadWaVersionCache,
+  localWaWebVersionCacheDirectory,
+  waVersionCacheExists,
+} from './appData';
 import appEventEmitter, { AppEvents } from './events';
-import { BrowserWindow } from 'electron/main';
+import { WA_WEB_VERSION } from './constants';
 
 let waClient: waweb.Client;
-
-const localWwebPageCachePath = path.join(__dirname, '../../resources/wwebjs/');
 
 function setupClient(mainWindow: BrowserWindow): void {
   // force a login every time for dev so that we have to login again to send messages
@@ -24,10 +28,10 @@ function setupClient(mainWindow: BrowserWindow): void {
   const authStrategy = is.dev ? new waweb.NoAuth() : new waweb.LocalAuth();
   waClient = new waweb.Client({
     authStrategy,
-    webVersion: '2.2413.51-beta',
+    webVersion: WA_WEB_VERSION,
     webVersionCache: {
       type: 'local',
-      path: localWwebPageCachePath,
+      path: localWaWebVersionCacheDirectory,
       strict: true,
     },
     puppeteer: {
@@ -48,12 +52,21 @@ function setupClient(mainWindow: BrowserWindow): void {
   process.on('uncaughtException', closeWA);
 }
 
-export function initWA(mainWindow: BrowserWindow): void {
+function initWaPart2(mainWindow: BrowserWindow): void {
   if (chromiumExists()) {
     return setupClient(mainWindow);
   } else {
     appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => setupClient(mainWindow));
     downloadChromium();
+  }
+}
+
+export function initWa(mainWindow: BrowserWindow): void {
+  if (waVersionCacheExists()) {
+    initWaPart2(mainWindow);
+  } else {
+    appEventEmitter.on(AppEvents.WA_VERSION_CACHE_DOWNLOAD_COMPLETE, () => initWaPart2(mainWindow));
+    downloadWaVersionCache();
   }
 }
 

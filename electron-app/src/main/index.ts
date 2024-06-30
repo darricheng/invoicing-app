@@ -15,7 +15,7 @@ import {
   listCustomers,
   testDb,
 } from './db';
-import { sendInvoices, closePuppets, initWA } from './invoice';
+import { sendInvoices, closePuppets, initWa } from './invoice';
 import { initAppData } from './appData';
 
 let mainWindow: BrowserWindow;
@@ -44,7 +44,7 @@ function createWindow(): void {
   });
 
   // Set up WhatsApp Client
-  initWA(mainWindow);
+  initWa(mainWindow);
 
   // NOTE: for testing QR callbacks
   const menu = Menu.buildFromTemplate([
