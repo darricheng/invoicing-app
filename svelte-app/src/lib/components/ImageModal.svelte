@@ -2,6 +2,9 @@
   // Stores
   import { getModalStore } from '@skeletonlabs/skeleton';
 
+  // next line throws errors but is necessary to prevent a warning in runtime
+  export let parent;
+
   const modalStore = getModalStore();
 
   const cImage = 'w-modal-slim rounded-container-token overflow-hidden shadow-xl';
