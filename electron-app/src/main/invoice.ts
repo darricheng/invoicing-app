@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 
 import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
-import { chromiumExists, chromiumPath, downloadPuppeteer } from './appData';
+import { chromiumExists, chromiumPath, downloadChromium } from './appData';
 import appEventEmitter, { AppEvents } from './events';
 import { BrowserWindow } from 'electron/main';
 
@@ -60,7 +60,7 @@ export function initWA(mainWindow: BrowserWindow): void {
     return setupClient(mainWindow);
   } else {
     appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => setupClient(mainWindow));
-    downloadPuppeteer();
+    downloadChromium();
   }
 }
 

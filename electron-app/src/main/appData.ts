@@ -31,7 +31,7 @@ export function chromiumExists(): boolean {
   return fs.existsSync(chromiumPath);
 }
 
-export function downloadPuppeteer(): void {
+export function downloadChromium(): void {
   const zippedChromiumFile = fs.createWriteStream(zippedChromiumPath);
 
   https
