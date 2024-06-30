@@ -3,6 +3,7 @@
   import { getModalStore } from '@skeletonlabs/skeleton';
 
   // next line throws errors but is necessary to prevent a warning in runtime
+  // eslint-disable-next-line svelte/valid-compile
   export let parent;
 
   const modalStore = getModalStore();
