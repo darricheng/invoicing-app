@@ -16,7 +16,7 @@ import {
   testDb,
 } from './db';
 import { sendInvoices, closePuppets, initWA } from './invoice';
-import { downloadPuppeteer, initAppData } from './appData';
+import { initAppData } from './appData';
 
 let mainWindow: BrowserWindow;
 
@@ -44,11 +44,7 @@ function createWindow(): void {
   });
 
   // Set up WhatsApp Client
-  // TODO: need better ordering
-  // probably makes sense for downloadPuppeteer to be in initWA,
-  // but need to debug the flow
   initWA(mainWindow);
-  downloadPuppeteer();
 
   // NOTE: for testing QR callbacks
   const menu = Menu.buildFromTemplate([

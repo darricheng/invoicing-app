@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 
 import { GenerateInvoicesData } from '../../../shared-types/types';
 import { viteMode } from './utils';
-import { chromiumPath, downloadPuppeteer } from './appData';
+import { chromiumExists, chromiumPath, downloadPuppeteer } from './appData';
 import appEventEmitter, { AppEvents } from './events';
 import { BrowserWindow } from 'electron/main';
 
@@ -56,10 +56,12 @@ function setupClient(mainWindow: BrowserWindow): void {
 }
 
 export function initWA(mainWindow: BrowserWindow): void {
-  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => setupClient(mainWindow));
-  appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => {
-    console.log('received CHROMIUM_DOWNLOAD_COMPLETE event');
-  });
+  if (chromiumExists()) {
+    return setupClient(mainWindow);
+  } else {
+    appEventEmitter.on(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE, () => setupClient(mainWindow));
+    downloadPuppeteer();
+  }
 }
 
 export async function sendInvoices(

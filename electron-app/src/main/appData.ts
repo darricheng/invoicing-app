@@ -27,13 +27,11 @@ export function initAppData(): void {
   }
 }
 
-export function downloadPuppeteer(): void {
-  if (fs.existsSync(chromiumPath)) {
-    console.log('Chromium already exists');
-    appEventEmitter.emit(AppEvents.CHROMIUM_DOWNLOAD_COMPLETE);
-    return;
-  }
+export function chromiumExists(): boolean {
+  return fs.existsSync(chromiumPath);
+}
 
+export function downloadPuppeteer(): void {
   const zippedChromiumFile = fs.createWriteStream(zippedChromiumPath);
 
   https
