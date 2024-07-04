@@ -12,11 +12,14 @@ import { is } from '@electron-toolkit/utils';
 
 import appEventEmitter, { AppEvents } from './events';
 import { WA_WEB_VERSION, WA_WEB_VERSION_CACHE_DOWNLOAD_URL, chromiumMacArmUrl } from './constants';
+import { CompanySettings } from '../../../shared-types/types';
 
 const basePath = is.dev ? `${app.getAppPath()}/mock-userData` : app.getPath('userData');
 const appDataPath = basePath + '/appData';
 
 const zippedChromiumPath = `${appDataPath}/zipped-chromium`;
+
+const companySettingsJsonPath = `${appDataPath}/company-settings.json`;
 
 export const localWaWebVersionCacheDirectory = `${appDataPath}/wwebjs/local-wa-version-cache`;
 export const localWaWebVersionCachePath = `${localWaWebVersionCacheDirectory}/${WA_WEB_VERSION}.html`;
@@ -78,4 +81,9 @@ export function downloadChromium(): void {
       fs.unlinkSync(zippedChromiumPath);
       console.error(err.message);
     });
+}
+
+export function getCompanySettings(): CompanySettings {
+  const data = fs.readFileSync(companySettingsJsonPath, 'utf8');
+  return JSON.parse(data);
 }

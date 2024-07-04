@@ -48,3 +48,8 @@ export interface GenerateInvoicesData {
   invoiceData: Array<InvoiceTableData>;
   message: string;
 }
+
+export interface CompanySettings {
+  name: string;
+  phone: string;
+}

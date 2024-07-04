@@ -29,6 +29,12 @@ contextBridge.exposeInMainWorld('pdfAPI', {
   },
 });
 
+contextBridge.exposeInMainWorld('companySettingsAPI', {
+  getCompanySettings: () => {
+    return ipcRenderer.invoke('get-company-settings');
+  },
+});
+
 contextBridge.exposeInMainWorld('whatsappApi', {
   onReceiveWhatsappQr: (callback) => {
     return ipcRenderer.on('whatsapp-qr', (_event, data) => {

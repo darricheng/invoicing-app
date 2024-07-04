@@ -7,6 +7,7 @@ import {
   type ListCustomers,
   type OnWhatsappReady,
   type SendInvoices,
+  type GetCompanySettings,
 } from '../../electron-app/src/main/types';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -34,6 +35,10 @@ export interface IPdfAPI {
   sendInvoices: SendInvoices;
 }
 
+export interface ICompanySettingsAPI {
+  getCompanySettings: GetCompanySettings;
+}
+
 export interface IWhatsappApi {
   onReceiveWhatsappQr: OnReceiveWhatsappQr;
   onWhatsappReady: OnWhatsappReady;
@@ -44,5 +49,6 @@ declare global {
     dbAPI: IDbAPI;
     pdfAPI: IPdfAPI;
     whatsappApi: IWhatsappApi;
+    companySettingsAPI: ICompanySettingsAPI;
   }
 }

@@ -16,7 +16,7 @@ import {
   testDb,
 } from './db';
 import { sendInvoices, closePuppets, initWa } from './invoice';
-import { initAppData } from './appData';
+import { getCompanySettings, initAppData } from './appData';
 
 let mainWindow: BrowserWindow;
 
@@ -110,6 +110,7 @@ app.whenReady().then(() => {
   ipcMain.handle('delete-customer', deleteCustomer);
   ipcMain.handle('get-everything', getEverything);
   ipcMain.handle('send-invoices', sendInvoices);
+  ipcMain.handle('get-company-settings', getCompanySettings);
 
   createWindow();
 

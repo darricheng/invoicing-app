@@ -1,4 +1,4 @@
-import { type GenerateInvoicesData } from '../../../shared-types/types';
+import { CompanySettings, type GenerateInvoicesData } from '../../../shared-types/types';
 
 export interface Customer {
   id: number;
@@ -48,6 +48,9 @@ export type GetEverything = () => Promise<Array<FullCustomerWithLineItems>>;
 
 // pdfApi
 export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;
+
+// companySettingsApi
+export type GetCompanySettings = () => Promise<CompanySettings>;
 
 // whatsappApi
 export type OnReceiveWhatsappQr = (callback: (data: string) => void) => void;
