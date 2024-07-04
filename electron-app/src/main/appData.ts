@@ -11,13 +11,11 @@ import { app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
 import appEventEmitter, { AppEvents } from './events';
-import { WA_WEB_VERSION, WA_WEB_VERSION_CACHE_DOWNLOAD_URL } from './constants';
+import { WA_WEB_VERSION, WA_WEB_VERSION_CACHE_DOWNLOAD_URL, chromiumMacArmUrl } from './constants';
 
 const basePath = is.dev ? `${app.getAppPath()}/mock-userData` : app.getPath('userData');
 const appDataPath = basePath + '/appData';
 
-const chromiumMacArmUrl =
-  'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Mac_Arm%2F1045634%2Fchrome-mac.zip?generation=1662945273234999&alt=media';
 const zippedChromiumPath = `${appDataPath}/zipped-chromium`;
 
 export const localWaWebVersionCacheDirectory = `${appDataPath}/wwebjs/local-wa-version-cache`;
