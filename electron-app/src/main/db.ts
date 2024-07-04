@@ -15,7 +15,7 @@ import { Model } from 'sequelize';
 
 let sequelize: Sequelize;
 
-export async function initDb(path: string) {
+export async function initDb(path: string): Promise<void> {
   sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: path,
@@ -83,7 +83,7 @@ export async function initDb(path: string) {
     await sequelize.sync();
   }
 }
-export async function testDb() {
+export async function testDb(): Promise<void> {
   // try {
   //   await sequelize.authenticate();
   //   console.log('Connection has been established successfully.');
@@ -91,7 +91,7 @@ export async function testDb() {
   //   console.error('Unable to connect to the database:', error);
   // }
 }
-export async function closeDb() {
+export async function closeDb(): Promise<void> {
   await sequelize.close();
 }
 
