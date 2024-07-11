@@ -105,7 +105,7 @@
           }}
         >
           <th>Company Name</th>
-          <td>{$settingsData.name}</td>
+          <td>{$settingsData.name || '-'}</td>
         </tr>
         <tr
           on:click={() => {
@@ -113,7 +113,7 @@
           }}
         >
           <th>Company Phone Number</th>
-          <td>{$settingsData.phone}</td>
+          <td>{$settingsData.phone || '-'}</td>
         </tr>
         <tr
           on:click={() => {
@@ -121,7 +121,7 @@
           }}
         >
           <th>Company Address</th>
-          <td>{$settingsData.address}</td>
+          <td>{$settingsData.address || '-'}</td>
         </tr>
         <tr>
           <th>Company Logo</th>
