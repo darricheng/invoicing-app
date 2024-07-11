@@ -33,6 +33,9 @@ contextBridge.exposeInMainWorld('companySettingsAPI', {
   getCompanySettings: () => {
     return ipcRenderer.invoke('get-company-settings');
   },
+  writeCompanySettings: (data) => {
+    return ipcRenderer.invoke('write-company-settings', data);
+  },
 });
 
 contextBridge.exposeInMainWorld('whatsappApi', {

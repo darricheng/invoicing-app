@@ -8,6 +8,7 @@ import {
   type OnWhatsappReady,
   type SendInvoices,
   type GetCompanySettings,
+  type WriteCompanySettings,
 } from '../../electron-app/src/main/types';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -37,6 +38,7 @@ export interface IPdfAPI {
 
 export interface ICompanySettingsAPI {
   getCompanySettings: GetCompanySettings;
+  writeCompanySettings: WriteCompanySettings;
 }
 
 export interface IWhatsappApi {

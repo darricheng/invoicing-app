@@ -4,10 +4,11 @@
 // See: https://www.electronjs.org/docs/latest/api/app#appgetpathname
 
 import fs from 'fs';
+import fsPromise from 'fs/promises';
 import https from 'https';
 import { exec } from 'child_process';
 
-import { app } from 'electron';
+import { IpcMainInvokeEvent, app } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
 import appEventEmitter, { AppEvents } from './events';
@@ -19,7 +20,7 @@ const appDataPath = basePath + '/appData';
 
 const zippedChromiumPath = `${appDataPath}/zipped-chromium`;
 
-const companySettingsJsonPath = `${appDataPath}/company-settings.json`;
+const companySettingsJson = `${appDataPath}/company-settings.json`;
 
 export const localWaWebVersionCacheDirectory = `${appDataPath}/wwebjs/local-wa-version-cache`;
 export const localWaWebVersionCachePath = `${localWaWebVersionCacheDirectory}/${WA_WEB_VERSION}.html`;
@@ -84,6 +85,19 @@ export function downloadChromium(): void {
 }
 
 export function getCompanySettings(): CompanySettings {
-  const data = fs.readFileSync(companySettingsJsonPath, 'utf8');
+  const data = fs.readFileSync(companySettingsJson, 'utf8');
   return JSON.parse(data);
+}
+
+export async function writeCompanySettings(
+  _e: IpcMainInvokeEvent,
+  data: CompanySettings
+): Promise<void> {
+  const json = JSON.stringify(data);
+  try {
+    await fsPromise.writeFile(companySettingsJson, json, 'utf8');
+    // TODO: return something so that can show toast on GUI
+  } catch (e) {
+    // TODO: handle error!
+  }
 }

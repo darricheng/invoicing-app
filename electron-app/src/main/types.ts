@@ -51,6 +51,7 @@ export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;
 
 // companySettingsApi
 export type GetCompanySettings = () => Promise<CompanySettings>;
+export type WriteCompanySettings = (data: CompanySettings) => Promise<void>;
 
 // whatsappApi
 export type OnReceiveWhatsappQr = (callback: (data: string) => void) => void;
