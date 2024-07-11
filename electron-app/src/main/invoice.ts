@@ -14,6 +14,7 @@ import {
   chromiumPath,
   downloadChromium,
   downloadWaVersionCache,
+  getCompanySettings,
   localWaWebVersionCacheDirectory,
   waVersionCacheExists,
 } from './appData';
@@ -106,12 +107,7 @@ export async function sendInvoices(
   const logo = await fs.promises.readFile(app.getAppPath() + '/logo.png', { encoding: 'base64' });
   const logoSrc = 'data:image/png;base64,' + logo;
 
-  const company = {
-    // NOTE: using env vars to store company details is a temporary measure
-    name: import.meta.env.MAIN_VITE_COMPANY_NAME,
-    address: import.meta.env.MAIN_VITE_COMPANY_ADDRESS,
-    phone: import.meta.env.MAIN_VITE_COMPANY_PHONE,
-  };
+  const company = getCompanySettings();
 
   const phonePathMap: { [key: string]: string } = {};
 
