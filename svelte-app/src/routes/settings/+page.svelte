@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
-  import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+  import { getModalStore, getToastStore, type ModalSettings } from '@skeletonlabs/skeleton';
 
   import type { CompanySettings } from '$sharedTypes/types';
 
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   const settingsData: Writable<CompanySettings> = writable({
     name: '',
@@ -16,12 +17,23 @@
     $settingsData = await window.companySettingsAPI.getCompanySettings();
   });
 
-  const writeSettingsToDisk = async () => {
+  const writeSettingsToDisk = async (settingsName: string, updatedValue: string) => {
     const data: CompanySettings = {
       name: $settingsData.name,
       phone: $settingsData.phone,
     };
-    await window.companySettingsAPI.writeCompanySettings(data);
+    try {
+      await window.companySettingsAPI.writeCompanySettings(data);
+      toastStore.trigger({
+        message: `Successfully updated ${settingsName} to ${updatedValue}`,
+        background: 'variant-filled-success',
+      });
+    } catch (e) {
+      toastStore.trigger({
+        message: `Something went wrong while updating ${settingsName}: ${e}`,
+        background: 'variant-filled-error',
+      });
+    }
   };
 
   const companyNameModal: ModalSettings = {
@@ -31,7 +43,7 @@
     response: (newCompanyName: string) => {
       if (!newCompanyName) return;
       $settingsData.name = newCompanyName;
-      writeSettingsToDisk();
+      writeSettingsToDisk('Company Name', newCompanyName);
     },
   };
   const companyPhoneModal: ModalSettings = {
@@ -41,7 +53,7 @@
     response: (newCompanyPhone: string) => {
       if (!newCompanyPhone) return;
       $settingsData.phone = newCompanyPhone;
-      writeSettingsToDisk();
+      writeSettingsToDisk('Company Phone', newCompanyPhone);
     },
   };
 </script>
