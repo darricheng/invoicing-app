@@ -24,10 +24,14 @@
       phone: $settingsData.phone,
       address: $settingsData.address,
     };
+    const successMessage =
+      updatedValue.length > 0
+        ? `Successfully updated ${settingsName} to ${updatedValue}`
+        : `Value of ${settingsName} was cleared`;
     try {
       await window.companySettingsAPI.writeCompanySettings(data);
       toastStore.trigger({
-        message: `Successfully updated ${settingsName} to ${updatedValue}`,
+        message: successMessage,
         background: 'variant-filled-success',
       });
     } catch (e) {
@@ -41,40 +45,49 @@
   const companyNameModal: ModalSettings = {
     type: 'prompt',
     title: 'Edit Company Name',
-    valueAttr: { type: 'text', required: true },
-    response: (newCompanyName: string) => {
+    valueAttr: { type: 'text' },
+    response: (newCompanyName: string | false | undefined) => {
+      if (newCompanyName === false) {
+        return;
+      }
       if (newCompanyName) {
         $settingsData.name = newCompanyName;
       } else {
         $settingsData.name = '';
       }
-      writeSettingsToDisk('Company Name', newCompanyName);
+      writeSettingsToDisk('Company Name', $settingsData.name);
     },
   };
   const companyPhoneModal: ModalSettings = {
     type: 'prompt',
     title: 'Edit Company Phone',
-    valueAttr: { type: 'text', required: true },
-    response: (newCompanyPhone: string) => {
+    valueAttr: { type: 'text' },
+    response: (newCompanyPhone: string | false | undefined) => {
+      if (newCompanyPhone === false) {
+        return;
+      }
       if (newCompanyPhone) {
         $settingsData.phone = newCompanyPhone;
       } else {
         $settingsData.phone = '';
       }
-      writeSettingsToDisk('Company Phone', newCompanyPhone);
+      writeSettingsToDisk('Company Phone', $settingsData.phone);
     },
   };
   const companyAddressModal: ModalSettings = {
     type: 'prompt',
     title: 'Edit Company Address',
-    valueAttr: { type: 'text', required: true },
-    response: (newCompanyAddress: string) => {
+    valueAttr: { type: 'text' },
+    response: (newCompanyAddress: string | false | undefined) => {
+      if (newCompanyAddress === false) {
+        return;
+      }
       if (newCompanyAddress) {
         $settingsData.address = newCompanyAddress;
       } else {
         $settingsData.address = '';
       }
-      writeSettingsToDisk('Company Address', newCompanyAddress);
+      writeSettingsToDisk('Company Address', $settingsData.address);
     },
   };
 </script>
