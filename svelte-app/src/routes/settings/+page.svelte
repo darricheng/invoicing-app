@@ -11,6 +11,7 @@
   const settingsData: Writable<CompanySettings> = writable({
     name: '',
     phone: '',
+    address: '',
   });
 
   onMount(async () => {
@@ -21,6 +22,7 @@
     const data: CompanySettings = {
       name: $settingsData.name,
       phone: $settingsData.phone,
+      address: $settingsData.address,
     };
     try {
       await window.companySettingsAPI.writeCompanySettings(data);
@@ -41,8 +43,11 @@
     title: 'Edit Company Name',
     valueAttr: { type: 'text', required: true },
     response: (newCompanyName: string) => {
-      if (!newCompanyName) return;
-      $settingsData.name = newCompanyName;
+      if (newCompanyName) {
+        $settingsData.name = newCompanyName;
+      } else {
+        $settingsData.name = '';
+      }
       writeSettingsToDisk('Company Name', newCompanyName);
     },
   };
@@ -51,9 +56,25 @@
     title: 'Edit Company Phone',
     valueAttr: { type: 'text', required: true },
     response: (newCompanyPhone: string) => {
-      if (!newCompanyPhone) return;
-      $settingsData.phone = newCompanyPhone;
+      if (newCompanyPhone) {
+        $settingsData.phone = newCompanyPhone;
+      } else {
+        $settingsData.phone = '';
+      }
       writeSettingsToDisk('Company Phone', newCompanyPhone);
+    },
+  };
+  const companyAddressModal: ModalSettings = {
+    type: 'prompt',
+    title: 'Edit Company Address',
+    valueAttr: { type: 'text', required: true },
+    response: (newCompanyAddress: string) => {
+      if (newCompanyAddress) {
+        $settingsData.address = newCompanyAddress;
+      } else {
+        $settingsData.address = '';
+      }
+      writeSettingsToDisk('Company Address', newCompanyAddress);
     },
   };
 </script>
@@ -80,6 +101,14 @@
         >
           <th>Company Phone Number</th>
           <td>{$settingsData.phone}</td>
+        </tr>
+        <tr
+          on:click={() => {
+            modalStore.trigger(companyAddressModal);
+          }}
+        >
+          <th>Company Address</th>
+          <td>{$settingsData.address}</td>
         </tr>
         <tr>
           <th>Company Logo</th>

@@ -52,4 +52,5 @@ export interface GenerateInvoicesData {
 export interface CompanySettings {
   name: string;
   phone: string;
+  address: string;
 }
