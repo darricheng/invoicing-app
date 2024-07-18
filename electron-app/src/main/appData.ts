@@ -36,6 +36,9 @@ export function initAppData(): void {
   if (!fs.existsSync(localWaWebVersionCacheDirectory)) {
     fs.mkdirSync(localWaWebVersionCacheDirectory, { recursive: true });
   }
+  if (!fs.existsSync(invoicesFolderPath)) {
+    fs.mkdirSync(invoicesFolderPath);
+  }
 }
 
 export function waVersionCacheExists(): boolean {

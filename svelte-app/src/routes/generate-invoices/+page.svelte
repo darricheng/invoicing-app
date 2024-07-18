@@ -176,9 +176,9 @@
       <button type="button" class="variant-filled-primary btn" on:click={generateInvoices}
         >Send Invoices</button
       >
-      <!-- <button type="button" class="variant-ghost-primary btn" on:click={openInvoicesFolder} -->
-      <!--   >Open Invoices Folder</button -->
-      <!-- > -->
+      <button type="button" class="variant-ghost-primary btn" on:click={openInvoicesFolder}
+        >Open Invoices Folder</button
+      >
       <button type="button" class="variant-ghost-secondary btn" on:click={selectAll}
         >Select All</button
       >
