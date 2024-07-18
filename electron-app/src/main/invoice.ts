@@ -15,6 +15,7 @@ import {
   downloadChromium,
   downloadWaVersionCache,
   getCompanySettings,
+  invoicesFolderPath,
   localWaWebVersionCacheDirectory,
   waVersionCacheExists,
 } from './appData';
@@ -149,12 +150,7 @@ export async function sendInvoices(
 
     console.log('generating pdf...');
     const path =
-      app.getAppPath() +
-      '/invoices/' +
-      today.format('YYYYMMDD-HHmmss') +
-      '-' +
-      entry.customer.name +
-      '.pdf';
+      invoicesFolderPath + today.format('YYYYMMDD-HHmmss') + '-' + entry.customer.name + '.pdf';
     phonePathMap[entry.customer.phone] = path;
 
     await page.pdf({

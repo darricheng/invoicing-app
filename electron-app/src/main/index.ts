@@ -16,7 +16,12 @@ import {
   testDb,
 } from './db';
 import { sendInvoices, closePuppets, initWa } from './invoice';
-import { getCompanySettings, initAppData, writeCompanySettings } from './appData';
+import {
+  getCompanySettings,
+  initAppData,
+  openInvoicesFolder,
+  writeCompanySettings,
+} from './appData';
 
 let mainWindow: BrowserWindow;
 
@@ -110,6 +115,7 @@ app.whenReady().then(() => {
   ipcMain.handle('delete-customer', deleteCustomer);
   ipcMain.handle('get-everything', getEverything);
   ipcMain.handle('send-invoices', sendInvoices);
+  ipcMain.handle('open-invoices-folder', openInvoicesFolder);
   ipcMain.handle('get-company-settings', getCompanySettings);
   ipcMain.handle('write-company-settings', writeCompanySettings);
 

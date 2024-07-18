@@ -27,6 +27,9 @@ contextBridge.exposeInMainWorld('pdfAPI', {
   sendInvoices: (data) => {
     return ipcRenderer.invoke('send-invoices', data);
   },
+  openInvoicesFolder: () => {
+    return ipcRenderer.invoke('open-invoices-folder');
+  },
 });
 
 contextBridge.exposeInMainWorld('companySettingsAPI', {

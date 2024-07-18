@@ -8,7 +8,7 @@ import fsPromise from 'fs/promises';
 import https from 'https';
 import { exec } from 'child_process';
 
-import { IpcMainInvokeEvent, app } from 'electron';
+import { IpcMainInvokeEvent, app, shell } from 'electron';
 import { is } from '@electron-toolkit/utils';
 
 import appEventEmitter, { AppEvents } from './events';
@@ -26,6 +26,8 @@ export const localWaWebVersionCacheDirectory = `${appDataPath}/wwebjs/local-wa-v
 export const localWaWebVersionCachePath = `${localWaWebVersionCacheDirectory}/${WA_WEB_VERSION}.html`;
 
 export const chromiumPath = `${appDataPath}/chrome-mac/Chromium.app/Contents/MacOS/Chromium`;
+
+export const invoicesFolderPath = `${appDataPath}/invoices/`;
 
 export function initAppData(): void {
   if (!fs.existsSync(appDataPath)) {
@@ -100,4 +102,11 @@ export async function writeCompanySettings(
   } catch (e) {
     // TODO: handle error!
   }
+}
+
+export async function openInvoicesFolder(): Promise<void> {
+  console.log('called!');
+  console.log(invoicesFolderPath);
+  const msg = await shell.openPath(invoicesFolderPath);
+  console.log(msg);
 }

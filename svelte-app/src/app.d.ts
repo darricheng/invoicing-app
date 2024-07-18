@@ -9,6 +9,7 @@ import {
   type SendInvoices,
   type GetCompanySettings,
   type WriteCompanySettings,
+  type OpenInvoicesFolder,
 } from '../../electron-app/src/main/types';
 
 // See https://kit.svelte.dev/docs/types#app
@@ -34,6 +35,7 @@ export interface IDbAPI {
 
 export interface IPdfAPI {
   sendInvoices: SendInvoices;
+  openInvoicesFolder: OpenInvoicesFolder;
 }
 
 export interface ICompanySettingsAPI {

@@ -48,6 +48,7 @@ export type GetEverything = () => Promise<Array<FullCustomerWithLineItems>>;
 
 // pdfApi
 export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;
+export type OpenInvoicesFolder = () => Promise<void>;
 
 // companySettingsApi
 export type GetCompanySettings = () => Promise<CompanySettings>;
