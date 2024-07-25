@@ -148,9 +148,17 @@ export async function sendInvoices(
     // page needs time to load fonts over the network
     await page.waitForNetworkIdle();
 
-    console.log('generating pdf...');
-    const path =
-      invoicesFolderPath + today.format('YYYYMMDD-HHmmss') + '-' + entry.customer.name + '.pdf';
+    const date = today.format('YYYYMMDD');
+    const time = today.format('HHmmss');
+
+    // check if a folder for today already exists, otherwise create one.
+    const pathForToday = invoicesFolderPath + date + '/';
+
+    if (!fs.existsSync(pathForToday)) {
+      fs.mkdirSync(pathForToday);
+    }
+
+    const path = pathForToday + `${date}-${time}` + '-' + entry.customer.name + '.pdf';
     phonePathMap[entry.customer.phone] = path;
 
     await page.pdf({
