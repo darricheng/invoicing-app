@@ -69,8 +69,6 @@
             message: 'There exists a line item with 0 rate or quantity',
             background: 'variant-filled-error',
           });
-          console.error('found invalid data for generating invoices');
-          console.error(`offending customer and item: ${customer.customer.name}, ${name}`);
           return;
         }
       }
@@ -102,14 +100,18 @@
 
       toastStore.trigger({ message: 'Sending invoices...' });
       try {
-        await window.pdfAPI.sendInvoices({ invoiceData: toSend, message: response.message });
+        const resultingMsg = await window.pdfAPI.sendInvoices({
+          invoiceData: toSend,
+          message: response.message || '',
+        });
+
         toastStore.trigger({
-          message: 'Successfully sent invoices!',
+          message: resultingMsg,
           background: 'variant-filled-success',
         });
       } catch (e) {
         toastStore.trigger({
-          message: 'An error occurred, please check your WhatsApp separately for any issues.',
+          message: `Something went wrong: ${e}`,
           background: 'variant-filled-error',
         });
       }

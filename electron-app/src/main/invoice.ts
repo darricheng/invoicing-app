@@ -75,7 +75,7 @@ export function initWa(mainWindow: BrowserWindow): void {
 export async function sendInvoices(
   _e: IpcMainInvokeEvent,
   data: GenerateInvoicesData
-): Promise<void> {
+): Promise<string> {
   const invoiceData = data.invoiceData;
   const message = data.message.trim();
 
@@ -174,33 +174,33 @@ export async function sendInvoices(
   }
   await browser.close();
 
+  if (viteMode === 'development') {
+    return 'DEV MODE: invoices created only';
+  }
+
+  if (!waClient.info?.wid) {
+    return 'Not logged in to WhatsApp, invoices were created but not sent.';
+  }
+
   for (const phone in phonePathMap) {
     const data = await fs.promises.readFile(phonePathMap[phone], {
       encoding: 'base64',
     });
     const fileName = phonePathMap[phone].split('/').pop();
-    if (viteMode === 'development') {
-      console.warn('DEV MODE');
-      console.log('pretending to send ' + fileName + ' to ' + phone);
-    } else {
-      // Vite mode is livedev or prod
 
-      // WARN: this severely constrains how the phone numbers need to be stored
-      const chatId = '65' + phone + '@c.us';
+    // WARN: this severely constrains how the phone numbers need to be stored
+    const chatId = '65' + phone + '@c.us';
 
-      try {
-        await waClient.sendMessage(
-          chatId,
-          new waweb.MessageMedia('application/pdf', data, fileName)
-        );
-        if (message.length > 0) {
-          await waClient.sendMessage(chatId, message);
-        }
-      } catch (e) {
-        console.error('failed to send message', e);
+    try {
+      await waClient.sendMessage(chatId, new waweb.MessageMedia('application/pdf', data, fileName));
+      if (message.length > 0) {
+        await waClient.sendMessage(chatId, message);
       }
+    } catch (e) {
+      console.error('failed to send message', e);
     }
   }
+  return 'Successfully sent invoices!';
 }
 
 function dollarFormatter(num: number): string {

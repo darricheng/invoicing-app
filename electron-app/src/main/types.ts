@@ -47,7 +47,7 @@ export type DeleteCustomer = (id: number) => Promise<number>; // should just ret
 export type GetEverything = () => Promise<Array<FullCustomerWithLineItems>>;
 
 // pdfApi
-export type SendInvoices = (data: GenerateInvoicesData) => Promise<number>;
+export type SendInvoices = (data: GenerateInvoicesData) => Promise<string>;
 export type OpenInvoicesFolder = () => Promise<void>;
 
 // companySettingsApi
