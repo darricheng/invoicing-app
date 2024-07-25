@@ -14,6 +14,7 @@ import { is } from '@electron-toolkit/utils';
 import appEventEmitter, { AppEvents } from './events';
 import { WA_WEB_VERSION, WA_WEB_VERSION_CACHE_DOWNLOAD_URL, chromiumMacArmUrl } from './constants';
 import { CompanySettings } from '../../../shared-types/types';
+import dayjs from 'dayjs';
 
 const basePath = is.dev ? `${app.getAppPath()}/mock-userData` : app.getPath('userData');
 const appDataPath = basePath + '/appData';
@@ -108,8 +109,13 @@ export async function writeCompanySettings(
 }
 
 export async function openInvoicesFolder(): Promise<void> {
-  console.log('called!');
-  console.log(invoicesFolderPath);
-  const msg = await shell.openPath(invoicesFolderPath);
-  console.log(msg);
+  // Same path as the one used when creating invoices
+  const invoicesPathForToday = invoicesFolderPath + dayjs().format('YYYYMMDD');
+
+  // Only open the folder for today if invoices were created today
+  if (fs.existsSync(invoicesPathForToday)) {
+    await shell.openPath(invoicesPathForToday);
+  } else {
+    await shell.openPath(invoicesFolderPath);
+  }
 }
