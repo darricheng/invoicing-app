@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import { IpcMainInvokeEvent, app, BrowserWindow } from 'electron';
 import { is } from '@electron-toolkit/utils';
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import waweb from 'whatsapp-web.js';
 import Handlebars from 'handlebars';
 import dayjs from 'dayjs';
@@ -112,7 +112,7 @@ export async function sendInvoices(
 
   const phonePathMap: { [key: string]: string } = {};
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ executablePath: chromiumPath });
 
   for (const entry of invoiceData) {
     console.log('creating pdf for: ', entry.customer.name);
