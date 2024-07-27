@@ -147,15 +147,20 @@
       width: 52mm;
     }
 
-    #items-table {
+    #items-section {
       position: absolute;
       left: 0;
       top: 82mm;
       width: 100%;
-      padding-left: 8mm;
       border-left: 1mm solid var(--pink-line);
+      padding-left: 6mm;
+    }
+
+    #items-table {
+      width: 100%;
+      padding-left: 8mm;
       border-collapse: collapse; /* required for borders to show in table */
-      --first-col-left-pad: 6mm;
+      --first-col-left-pad: 0mm;
     }
     #items-table thead th {
       font-weight: 600;
@@ -185,14 +190,6 @@
     #items-table tfoot {
       position: relative;
       display: table-row-group; /* so that tfoot doesn't render on every page */
-    }
-    #items-table tfoot::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: var(--first-col-left-pad);
-      height: 0.25mm;
-      width: calc(100% - var(--first-col-left-pad) - 2mm); /* table left + right padding */
       border-top: 0.25mm solid var(--grey-100);
     }
     #items-table :is(thead, tbody) :is(th, td) {
@@ -242,31 +239,33 @@
         <p>TAX ID 00XXXXX1234X0XX</p>
       </div>
     </section>
-    <table id="items-table">
-      <thead>
-        <tr>
-          <th>ITEM DESCRIPTION</th>
-          <th>DETAILS</th>
-          <th>QTY</th>
-          <th>RATE</th>
-          <th>AMOUNT</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Item Name</th>
-          <td></td>
-          <td>1</td>
-          <td>$3,000.00</td>
-          <td>$3,000.00</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th colspan="4">Total (SGD)</th>
-          <td>$6,000.00</td>
-        </tr>
-      </tfoot>
-    </table>
+    <section id="items-section">
+      <table id="items-table">
+        <thead>
+          <tr>
+            <th>ITEM DESCRIPTION</th>
+            <th>DETAILS</th>
+            <th>QTY</th>
+            <th>RATE</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Item Name</th>
+            <td></td>
+            <td>1</td>
+            <td>$3,000.00</td>
+            <td>$3,000.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="4">Total (SGD)</th>
+            <td>$6,000.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
   </body>
 </html>
