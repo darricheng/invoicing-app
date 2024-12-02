@@ -51,17 +51,41 @@ function createWindow(): void {
   // Set up WhatsApp Client
   initWa(mainWindow);
 
-  // NOTE: for testing QR callbacks
   const menu = Menu.buildFromTemplate([
     {
-      label: app.name,
+      label: 'Application',
       submenu: [
         {
-          click: () => mainWindow.webContents.send('whatsapp-qr', 'some qr string'),
-          label: 'Test QR handler',
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: (): void => {
+            app.quit();
+          },
         },
       ],
     },
+    {
+      label: 'Edit',
+      submenu: [
+        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
+        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+        { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll' },
+      ],
+    },
+    // For testing QR callbacks
+    // {
+    //   label: app.name,
+    //   submenu: [
+    //     {
+    //       click: () => mainWindow.webContents.send('whatsapp-qr', 'some qr string'),
+    //       label: 'Test QR handler',
+    //     },
+    //   ],
+    // },
   ]);
   Menu.setApplicationMenu(menu);
 
@@ -138,28 +162,28 @@ app.on('window-all-closed', () => {
 });
 
 // See: https://github.com/electron/electron/issues/9433#issuecomment-1870607944
-enum BeforeQuitActionStatus {
-  NOT_STARTED = 'NOT_STARTED',
-  IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-}
-let beforeQuitActionStatus = BeforeQuitActionStatus.NOT_STARTED;
-app.on('before-quit', async (e) => {
-  switch (beforeQuitActionStatus) {
-    case BeforeQuitActionStatus.NOT_STARTED:
-      e.preventDefault();
-      beforeQuitActionStatus = BeforeQuitActionStatus.IN_PROGRESS;
-      await closeDb();
-      await closePuppets();
-      beforeQuitActionStatus = BeforeQuitActionStatus.COMPLETED;
-      app.quit();
-      break;
-    case BeforeQuitActionStatus.IN_PROGRESS:
-      e.preventDefault();
-      break;
-    case BeforeQuitActionStatus.COMPLETED:
-      break;
-  }
-});
+// enum BeforeQuitActionStatus {
+//   NOT_STARTED = 'NOT_STARTED',
+//   IN_PROGRESS = 'IN_PROGRESS',
+//   COMPLETED = 'COMPLETED',
+// }
+// let beforeQuitActionStatus = BeforeQuitActionStatus.NOT_STARTED;
+// app.on('before-quit', async (e) => {
+// switch (beforeQuitActionStatus) {
+//   case BeforeQuitActionStatus.NOT_STARTED:
+//     e.preventDefault();
+//     beforeQuitActionStatus = BeforeQuitActionStatus.IN_PROGRESS;
+//     await closeDb();
+//     await closePuppets();
+//     beforeQuitActionStatus = BeforeQuitActionStatus.COMPLETED;
+//     app.quit();
+//     break;
+//   case BeforeQuitActionStatus.IN_PROGRESS:
+//     e.preventDefault();
+//     break;
+//   case BeforeQuitActionStatus.COMPLETED:
+//     break;
+// }
+// });
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
