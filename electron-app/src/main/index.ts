@@ -6,7 +6,7 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils';
 import icon from '../../resources/icon.png?asset';
 import {
   addCustomer,
-  closeDb,
+  // closeDb,
   deleteCustomer,
   editCustomer,
   getCustomer,
@@ -15,7 +15,7 @@ import {
   listCustomers,
   testDb,
 } from './db';
-import { sendInvoices, closePuppets, initWa } from './invoice';
+import { sendInvoices, /* closePuppets, */ initWa } from './invoice';
 import {
   getCompanySettings,
   initAppData,
