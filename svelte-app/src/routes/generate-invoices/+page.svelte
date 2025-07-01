@@ -63,13 +63,20 @@
     // TODO: inform user about all errors instead of failing at the first error
     for (const customer of toSend) {
       for (const { name, rate, quantity } of customer.line_items) {
-        // name is not empty string or 0, rate and quantity aren't 0
-        if (!name || rate === 0 || quantity === 0) {
+        // No name so show error and return
+        if (!name) {
           toastStore.trigger({
-            message: 'There exists a line item with 0 rate or quantity',
+            message: 'There is a line item without a name',
             background: 'variant-filled-error',
           });
           return;
+        }
+        // rate and quantity aren't 0, show warning
+        if (rate === 0 || quantity === 0) {
+          toastStore.trigger({
+            message: 'There exists a line item with 0 rate or quantity',
+            background: 'variant-filled-warning',
+          });
         }
       }
     }
